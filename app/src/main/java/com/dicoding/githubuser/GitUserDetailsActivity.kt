@@ -3,7 +3,6 @@ package com.dicoding.githubuser
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_gituser_details.*
@@ -16,15 +15,15 @@ class GitUserDetailsActivity : AppCompatActivity(), View.OnClickListener {
         val actionbar = supportActionBar
         actionbar?.setDisplayHomeAsUpEnabled(true)
 
-        val gitUser = intent.getParcelableExtra<GitUser>(Companion.EXTRA_USER)
-        Glide.with(this).load(gitUser?.avatar).into(img_item_avatar)
-        tv_item_name.text = gitUser?.name
-        tv_item_username.text = gitUser?.username
-        tv_item_company.text = gitUser?.company
-        tv_item_location.text = gitUser?.location
-        tv_item_repository.text = gitUser?.repository.toString()
-        tv_item_follower.text = gitUser?.follower.toString()
-        tv_item_following.text = gitUser?.following.toString()
+        val user = intent.getParcelableExtra<GitUser>(Companion.EXTRA_USER)
+        Glide.with(this).load(user?.avatar).into(img_item_avatar)
+        tv_item_name.text = user?.name
+        tv_item_username.text = user?.username
+        tv_item_company.text = user?.company
+        tv_item_location.text = user?.location
+        tv_item_repository.text = user?.repository.toString()
+        tv_item_follower.text = user?.follower.toString()
+        tv_item_following.text = user?.following.toString()
 
         btn_set_share.setOnClickListener(this)
     }

@@ -15,8 +15,6 @@ import org.json.JSONObject
 
 class GitUserDetailsActivity : AppCompatActivity(), View.OnClickListener {
 
-    private lateinit var binding: GitUserDetailsActivity
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_gituser_details)
@@ -25,15 +23,7 @@ class GitUserDetailsActivity : AppCompatActivity(), View.OnClickListener {
         actionbar?.setDisplayHomeAsUpEnabled(true)
 
         val url = intent.getStringExtra(Companion.USER_URL).toString()
-        val user = getGitUserDetails(url)
-        Glide.with(this).load(user.avatar_url).into(img_item_avatar)
-        tv_item_name.text = user.name
-        tv_item_username.text = user.login
-        tv_item_company.text = user.company
-        tv_item_location.text = user.location
-        tv_item_repository.text = user.public_repos.toString()
-        tv_item_follower.text = user.followers.toString()
-        tv_item_following.text = user.following.toString()
+        getGitUserDetails(url)
 
         btn_set_share.setOnClickListener(this)
     }
@@ -56,11 +46,11 @@ class GitUserDetailsActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private fun getGitUserDetails(url: String): GitUser {
-        //binding.progressBar.visibility = View.VISIBLE
+    private fun getGitUserDetails(url: String) {
+        progressBarDetails.visibility = View.VISIBLE
 
-        val user = GitUser()
         val client = AsyncHttpClient()
+        client.addHeader("Authorization", Companion.TOKEN)
         client.addHeader("User-Agent", "request")
         client.get(url, object : AsyncHttpResponseHandler() {
             override fun onSuccess(
@@ -68,10 +58,10 @@ class GitUserDetailsActivity : AppCompatActivity(), View.OnClickListener {
                 headers: Array<Header>,
                 responseBody: ByteArray
             ) {
-                //binding.progressBar.visibility = View.INVISIBLE
+                progressBarDetails.visibility = View.INVISIBLE
 
                 val result = String(responseBody)
-                Log.d(javaClass.simpleName, result)
+                val user = GitUser()
                 try {
                     val responseObject = JSONObject(result)
                     user.login = responseObject.getString("login")
@@ -89,6 +79,7 @@ class GitUserDetailsActivity : AppCompatActivity(), View.OnClickListener {
                         .show()
                     e.printStackTrace()
                 }
+                ShowUserDetails(user)
             }
 
             override fun onFailure(
@@ -97,7 +88,7 @@ class GitUserDetailsActivity : AppCompatActivity(), View.OnClickListener {
                 responseBody: ByteArray,
                 error: Throwable
             ) {
-                //binding.progressBar.visibility = View.INVISIBLE
+                progressBarDetails.visibility = View.INVISIBLE
                 val errorMessage = when (statusCode) {
                     401 -> "$statusCode : Bad Request"
                     403 -> "$statusCode : Forbidden"
@@ -107,6 +98,17 @@ class GitUserDetailsActivity : AppCompatActivity(), View.OnClickListener {
                 Toast.makeText(this@GitUserDetailsActivity, errorMessage, Toast.LENGTH_SHORT).show()
             }
         })
-        return user
+    }
+
+    private fun ShowUserDetails(user: GitUser) {
+        Glide.with(this).load(user.avatar_url).into(img_item_avatar)
+        tv_item_name.text = user.name
+        tv_item_username.text = user.login
+        tv_item_company.text = user.company
+        tv_item_location.text = user.location
+        tv_item_repository.text = user.public_repos.toString()
+        tv_item_follower.text = user.followers.toString()
+        tv_item_following.text = user.following.toString()
+        Log.i("ShowUserDetails", user.toString())
     }
 }

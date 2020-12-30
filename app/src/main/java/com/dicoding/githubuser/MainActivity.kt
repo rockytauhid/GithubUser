@@ -1,35 +1,75 @@
 package com.dicoding.githubuser
 
+import android.app.SearchManager
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.githubuser.databinding.ActivityMainBinding
+import com.loopj.android.http.AsyncHttpClient
+import com.loopj.android.http.AsyncHttpResponseHandler
+import cz.msebera.android.httpclient.Header
+import org.json.JSONArray
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var adapter: ListGitUserAdapter
     private lateinit var binding: ActivityMainBinding
-    private val list = ArrayList<GitUser>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.rvGitusers.setHasFixedSize(true)
+        adapter = ListGitUserAdapter()
+        adapter.notifyDataSetChanged()
 
-        list.addAll(getListGitUsers())
-        if (list.size > 0)
-            showRecyclerList()
+        binding.rvGitusers.layoutManager = LinearLayoutManager(this)
+        binding.rvGitusers.adapter = adapter
+
+        getListGitUsers()
+
+        adapter.setOnItemClickCallback(object : ListGitUserAdapter.OnItemClickCallback {
+            override fun onItemClicked(user: GitUser) {
+                showSelectedItem(user)
+            }
+        })
     }
 
-    /*private fun getListGitUsers(): ArrayList<GitUser> {
-        binding.progressBar.visibility = View.VISIBLE
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.option_menu, menu)
 
-        val listGitUser = ArrayList<GitUser>()
+        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        val searchView = menu.findItem(R.id.search).actionView as SearchView
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
+        searchView.queryHint = resources.getString(R.string.search_hint)
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, SearchFragment())
+                    .addToBackStack(null)
+                    .commit()
+                return true
+            }
+            override fun onQueryTextChange(newText: String): Boolean {
+                return false
+            }
+        })
+        return true
+    }
+
+    private fun getListGitUsers() {
+        showLoading(true)
+
         val url = "https://api.github.com/users"
         val client = AsyncHttpClient()
+        client.addHeader("Authorization", Companion.TOKEN)
         client.addHeader("User-Agent", "request")
         client.get(url, object : AsyncHttpResponseHandler() {
             override fun onSuccess(
@@ -37,10 +77,9 @@ class MainActivity : AppCompatActivity() {
                 headers: Array<Header>,
                 responseBody: ByteArray
             ) {
-                binding.progressBar.visibility = View.INVISIBLE
-
+                binding.progressBarMain.visibility = View.INVISIBLE
+                val listUser = ArrayList<GitUser>()
                 val result = String(responseBody)
-                Log.d(javaClass.simpleName, result)
                 try {
                     val jsonArray = JSONArray(result)
                     for (i in 0 until jsonArray.length()) {
@@ -49,12 +88,14 @@ class MainActivity : AppCompatActivity() {
                         user.login = jsonObject.getString("login")
                         user.avatar_url = jsonObject.getString("avatar_url")
                         user.url = jsonObject.getString("url")
-                        listGitUser.add(user)
+                        listUser.add(user)
                     }
                 } catch (e: Exception) {
                     Toast.makeText(this@MainActivity, e.message, Toast.LENGTH_SHORT).show()
                     e.printStackTrace()
                 }
+                adapter.setData(listUser)
+                showLoading(false)
             }
 
             override fun onFailure(
@@ -63,7 +104,7 @@ class MainActivity : AppCompatActivity() {
                 responseBody: ByteArray,
                 error: Throwable
             ) {
-                binding.progressBar.visibility = View.INVISIBLE
+                showLoading(false)
                 val errorMessage = when (statusCode) {
                     401 -> "$statusCode : Bad Request"
                     403 -> "$statusCode : Forbidden"
@@ -73,51 +114,56 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this@MainActivity, errorMessage, Toast.LENGTH_SHORT).show()
             }
         })
-        return listGitUser
-    }*/
-
-    private fun getListGitUsers(): ArrayList<GitUser> {
-        binding.progressBar.visibility = View.VISIBLE
-        val dataUsername = resources.getStringArray(R.array.login)
-        val dataAvatar = resources.getStringArray(R.array.avatar_url)
-        val dataUrl = resources.getStringArray(R.array.url)
-        val dataFollowersUrl = resources.getStringArray(R.array.followers_url)
-        val dataFollowingUrl = resources.getStringArray(R.array.following_url)
-        val dataName = resources.getStringArray(R.array.name)
-        val dataCompany = resources.getStringArray(R.array.company)
-        val dataLocation = resources.getStringArray(R.array.location)
-        val dataRepository = resources.getStringArray(R.array.repository)
-        val dataFollowers = resources.getStringArray(R.array.followers)
-        val dataFollowing = resources.getStringArray(R.array.following)
-        val listGitUser = ArrayList<GitUser>()
-        for (position in dataName.indices) {
-            val user = GitUser(
-                dataUsername[position],
-                dataAvatar[position],
-                dataUrl[position],
-                dataFollowersUrl[position],
-                dataFollowingUrl[position],
-                dataName[position],
-                dataCompany[position],
-                dataLocation[position],
-                dataRepository[position].toInt(),
-                dataFollowers[position].toInt(),
-                dataFollowing[position].toInt()
-            )
-            listGitUser.add(user)
-        }
-        binding.progressBar.visibility = View.INVISIBLE
-        return listGitUser
     }
 
-    private fun showRecyclerList() {
-        binding.rvGitusers.layoutManager = LinearLayoutManager(this)
-        val listGitUserAdapter = ListGitUserAdapter(list)
-        binding.rvGitusers.adapter = listGitUserAdapter
+    private fun getSearchResult(query: String) {
+        showLoading(true)
 
-        listGitUserAdapter.setOnItemClickCallback(object : ListGitUserAdapter.OnItemClickCallback {
-            override fun onItemClicked(item: GitUser) {
-                showSelectedItem(item)
+        val url = "https://api.github.com/search/users?q=$query"
+        val client = AsyncHttpClient()
+        client.addHeader("Authorization", Companion.TOKEN)
+        client.addHeader("User-Agent", "request")
+        client.get(url, object : AsyncHttpResponseHandler() {
+            override fun onSuccess(
+                statusCode: Int,
+                headers: Array<Header>,
+                responseBody: ByteArray
+            ) {
+                binding.progressBarMain.visibility = View.INVISIBLE
+                val listUser = ArrayList<GitUser>()
+                val result = String(responseBody)
+                try {
+                    val jsonArray = JSONArray(result)
+                    for (i in 0 until jsonArray.length()) {
+                        val jsonObject = jsonArray.getJSONObject(i)
+                        val user = GitUser()
+                        user.login = jsonObject.getString("login")
+                        user.avatar_url = jsonObject.getString("avatar_url")
+                        user.url = jsonObject.getString("url")
+                        listUser.add(user)
+                    }
+                } catch (e: Exception) {
+                    Toast.makeText(this@MainActivity, e.message, Toast.LENGTH_SHORT).show()
+                    e.printStackTrace()
+                }
+                adapter.setData(listUser)
+                showLoading(false)
+            }
+
+            override fun onFailure(
+                statusCode: Int,
+                headers: Array<Header>,
+                responseBody: ByteArray,
+                error: Throwable
+            ) {
+                showLoading(false)
+                val errorMessage = when (statusCode) {
+                    401 -> "$statusCode : Bad Request"
+                    403 -> "$statusCode : Forbidden"
+                    404 -> "$statusCode : Not Found"
+                    else -> "$statusCode : ${error.message}"
+                }
+                Toast.makeText(this@MainActivity, errorMessage, Toast.LENGTH_SHORT).show()
             }
         })
     }
@@ -126,5 +172,13 @@ class MainActivity : AppCompatActivity() {
         val moveWithObjectIntent = Intent(this@MainActivity, GitUserDetailsActivity::class.java)
         moveWithObjectIntent.putExtra(Companion.USER_URL, user.url)
         startActivity(moveWithObjectIntent)
+    }
+
+    private fun showLoading(state: Boolean) {
+        if (state) {
+            binding.progressBarMain.visibility = View.VISIBLE
+        } else {
+            binding.progressBarMain.visibility = View.GONE
+        }
     }
 }

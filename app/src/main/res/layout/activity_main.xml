@@ -7,6 +7,11 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <FrameLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:id="@+id/fragment_container" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_gitusers"
         android:layout_width="match_parent"
@@ -14,7 +19,7 @@
         tools:listitem="@layout/item_row_gituser" />
 
     <ProgressBar
-        android:id="@+id/progressBar"
+        android:id="@+id/progressBarMain"
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

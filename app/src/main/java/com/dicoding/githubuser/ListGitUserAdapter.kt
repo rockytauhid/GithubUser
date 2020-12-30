@@ -1,32 +1,41 @@
 package com.dicoding.githubuser
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.dicoding.githubuser.databinding.ItemRowGituserBinding
 
-class ListGitUserAdapter(private val listGitUsers: ArrayList<GitUser>): RecyclerView.Adapter<ListGitUserAdapter.ListViewHolder>() {
+class ListGitUserAdapter(): RecyclerView.Adapter<ListGitUserAdapter.ListViewHolder>() {
 
+    private val mData = ArrayList<GitUser>()
     private var onItemClickCallback: OnItemClickCallback? = null
 
+    fun setData(items: ArrayList<GitUser>) {
+        mData.clear()
+        mData.addAll(items)
+        notifyDataSetChanged()
+    }
+
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ListViewHolder {
-        val binding = ItemRowGituserBinding.inflate(LayoutInflater.from(viewGroup.context), viewGroup, false)
-        return ListViewHolder(binding)
+        val mView = LayoutInflater.from(viewGroup.context).inflate(R.layout.item_row_gituser, viewGroup, false)
+        return ListViewHolder(mView)
     }
 
-    override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
-        holder.bind(listGitUsers[position])
+    override fun onBindViewHolder(viewHolder: ListViewHolder, position: Int) {
+        viewHolder.bind(mData[position])
     }
 
-    override fun getItemCount(): Int = listGitUsers.size
+    override fun getItemCount(): Int = mData.size
 
     fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
         this.onItemClickCallback = onItemClickCallback
     }
 
-    inner class ListViewHolder(private val binding: ItemRowGituserBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val binding = ItemRowGituserBinding.bind(itemView)
         fun bind(user: GitUser) {
             with(binding) {
                 Glide.with(itemView.context)
@@ -41,6 +50,6 @@ class ListGitUserAdapter(private val listGitUsers: ArrayList<GitUser>): Recycler
     }
 
     interface OnItemClickCallback {
-        fun onItemClicked(item: GitUser)
+        fun onItemClicked(user: GitUser)
     }
 }

@@ -5,12 +5,29 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class GitUser(
-    var username: String,
+    var login: String,
+    var avatar_url: String,
+    var url: String,
+    var followers_url: String,
+    var following_url: String,
     var name: String,
-    var avatar: Int,
     var company: String,
     var location: String,
-    var repository: Int,
-    var follower: Int,
+    var public_repos: Int,
+    var followers: Int,
     var following: Int
-) : Parcelable
+) : Parcelable {
+    constructor() : this(
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        0,
+        0,
+        0
+    )
+}

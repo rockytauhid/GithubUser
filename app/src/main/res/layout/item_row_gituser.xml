@@ -18,37 +18,16 @@
         tools:src="@tools:sample/avatars" />
 
     <TextView
-        android:id="@+id/txt_name"
+        android:id="@+id/txt_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="26dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
         android:text="@string/text_name"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@id/img_avatar"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="@string/placeholder_name" />
-
-    <TextView
-        android:id="@+id/txt_username"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="26dp"
-        android:layout_marginTop="10dp"
-        android:text="@string/text_username"
-        app:layout_constraintStart_toEndOf="@id/img_avatar"
-        app:layout_constraintTop_toBottomOf="@id/txt_name"
-        tools:text="@string/placeholder_username" />
-
-    <TextView
-        android:id="@+id/txt_company"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="26dp"
-        android:layout_marginTop="10dp"
-        android:text="@string/text_company"
-        app:layout_constraintStart_toEndOf="@id/img_avatar"
-        app:layout_constraintTop_toBottomOf="@id/txt_username"
-        tools:text="@string/placeholder_company"/>
+        tools:text="@string/placeholder_login" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

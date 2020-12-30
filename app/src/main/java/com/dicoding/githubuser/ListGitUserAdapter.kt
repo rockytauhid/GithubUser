@@ -3,6 +3,8 @@ package com.dicoding.githubuser
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.dicoding.githubuser.databinding.ItemRowGituserBinding
 
 class ListGitUserAdapter(private val listGitUsers: ArrayList<GitUser>): RecyclerView.Adapter<ListGitUserAdapter.ListViewHolder>() {
@@ -26,15 +28,12 @@ class ListGitUserAdapter(private val listGitUsers: ArrayList<GitUser>): Recycler
 
     inner class ListViewHolder(private val binding: ItemRowGituserBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(user: GitUser) {
-            with(binding){
-                /*Glide.with(itemView.context)
-                    .load(user.avatar)
+            with(binding) {
+                Glide.with(itemView.context)
+                    .load(user.avatar_url)
                     .apply(RequestOptions().override(55, 55))
-                    .into(imgAvatar)*/
-                txtName.text = user.username
-                txtUsername.text = user.username
-                txtCompany.text = user.company
-                imgAvatar.setImageResource(user.avatar)
+                    .into(imgAvatar)
+                txtLogin.text = user.login
 
                 itemView.setOnClickListener { onItemClickCallback?.onItemClicked(user) }
             }

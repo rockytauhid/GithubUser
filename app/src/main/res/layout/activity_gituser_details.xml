@@ -60,7 +60,7 @@
             app:layout_constraintBaseline_toBaselineOf="@+id/textView1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/textView1"
-            tools:text="@string/placeholder_username" />
+            tools:text="@string/placeholder_login" />
 
 
         <TextView
@@ -138,7 +138,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginBottom="8dp"
-            android:text="@string/text_follower"
+            android:text="@string/text_followers"
             app:layout_constraintBottom_toTopOf="@+id/textView6"
             app:layout_constraintEnd_toStartOf="@+id/tv_item_follower"
             app:layout_constraintStart_toStartOf="parent"
@@ -152,7 +152,7 @@
             app:layout_constraintBaseline_toBaselineOf="@+id/textView5"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/textView5"
-            tools:text="@string/placeholder_follower" />
+            tools:text="@string/placeholder_followers" />
 
 
         <TextView
@@ -186,5 +186,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

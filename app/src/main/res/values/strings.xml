@@ -6,19 +6,19 @@
     <string name="text_company">Company</string>
     <string name="text_location">Location</string>
     <string name="text_repository">Repository</string>
-    <string name="text_follower">Follower</string>
+    <string name="text_followers">Follower</string>
     <string name="text_following">Following</string>
     <string name="text_share">Share</string>
     <string name="text_github_logo">Github Logo</string>
     <string name="placeholder_name">Homer Simpsons</string>
-    <string name="placeholder_username">hsimpsons</string>
+    <string name="placeholder_login">hsimpsons</string>
     <string name="placeholder_company">Nuclear Power Plant</string>
     <string name="placeholder_location">Springfield</string>
     <string name="placeholder_repository">8</string>
-    <string name="placeholder_follower">666</string>
+    <string name="placeholder_followers">666</string>
     <string name="placeholder_following">99</string>
 
-    <string-array name="username">
+    <string-array name="login">
         <item>JakeWharton</item>
         <item>amitshekhariitbhu</item>
         <item>romainguy</item>
@@ -109,17 +109,55 @@
         <item>10</item>
     </string-array>
 
-    <string-array name="avatar">
-        <item>@raw/user1</item>
-        <item>@raw/user2</item>
-        <item>@raw/user3</item>
-        <item>@raw/user4</item>
-        <item>@raw/user5</item>
-        <item>@raw/user6</item>
-        <item>@raw/user7</item>
-        <item>@raw/user8</item>
-        <item>@raw/user9</item>
-        <item>@raw/user10</item>
+    <string-array name="avatar_url">
+        <item>https://avatars0.githubusercontent.com/u/1?v=4</item>
+        <item>https://avatars0.githubusercontent.com/u/2?v=4</item>
+        <item>https://avatars0.githubusercontent.com/u/3?v=4</item>
+        <item>https://avatars0.githubusercontent.com/u/4?v=4</item>
+        <item>https://avatars0.githubusercontent.com/u/5?v=4</item>
+        <item>https://avatars0.githubusercontent.com/u/6?v=4</item>
+        <item>https://avatars0.githubusercontent.com/u/7?v=4</item>
+        <item>https://avatars0.githubusercontent.com/u/17?v=4</item>
+        <item>https://avatars0.githubusercontent.com/u/18?v=4</item>
+        <item>https://avatars0.githubusercontent.com/u/19?v=4</item>
     </string-array>
 
+    <string-array name="url">
+        <item>https://api.github.com/users/mojombo</item>
+        <item>https://api.github.com/users/mojombo</item>
+        <item>https://api.github.com/users/mojombo</item>
+        <item>https://api.github.com/users/mojombo</item>
+        <item>https://api.github.com/users/mojombo</item>
+        <item>https://api.github.com/users/mojombo</item>
+        <item>https://api.github.com/users/mojombo</item>
+        <item>https://api.github.com/users/mojombo</item>
+        <item>https://api.github.com/users/mojombo</item>
+        <item>https://api.github.com/users/mojombo</item>
+    </string-array>
+
+    <string-array name="followers_url">
+        <item>https://api.github.com/users/mojombo/followers</item>
+        <item>https://api.github.com/users/mojombo/followers</item>
+        <item>https://api.github.com/users/mojombo/followers</item>
+        <item>https://api.github.com/users/mojombo/followers</item>
+        <item>https://api.github.com/users/mojombo/followers</item>
+        <item>https://api.github.com/users/mojombo/followers</item>
+        <item>https://api.github.com/users/mojombo/followers</item>
+        <item>https://api.github.com/users/mojombo/followers</item>
+        <item>https://api.github.com/users/mojombo/followers</item>
+        <item>https://api.github.com/users/mojombo/followers</item>
+    </string-array>
+
+    <string-array name="following_url">
+        <item>https://api.github.com/users/mojombo/following</item>
+        <item>https://api.github.com/users/mojombo/following</item>
+        <item>https://api.github.com/users/mojombo/following</item>
+        <item>https://api.github.com/users/mojombo/following</item>
+        <item>https://api.github.com/users/mojombo/following</item>
+        <item>https://api.github.com/users/mojombo/following</item>
+        <item>https://api.github.com/users/mojombo/following</item>
+        <item>https://api.github.com/users/mojombo/following</item>
+        <item>https://api.github.com/users/mojombo/following</item>
+        <item>https://api.github.com/users/mojombo/following</item>
+    </string-array>
 </resources>

@@ -11,14 +11,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.githubuser.databinding.ActivityMainBinding
-import com.loopj.android.http.AsyncHttpClient
 import com.loopj.android.http.AsyncHttpResponseHandler
 import cz.msebera.android.httpclient.Header
 import org.json.JSONArray
+import org.json.JSONObject
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var adapter: ListGitUserAdapter
+    private lateinit var adapter: ListUserAdapter
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,16 +26,16 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        adapter = ListGitUserAdapter()
+        adapter = ListUserAdapter()
         adapter.notifyDataSetChanged()
 
-        binding.rvGitusers.layoutManager = LinearLayoutManager(this)
-        binding.rvGitusers.adapter = adapter
+        binding.rvUsers.layoutManager = LinearLayoutManager(this)
+        binding.rvUsers.adapter = adapter
 
         getListGitUsers()
 
-        adapter.setOnItemClickCallback(object : ListGitUserAdapter.OnItemClickCallback {
-            override fun onItemClicked(user: GitUser) {
+        adapter.setOnItemClickCallback(object : ListUserAdapter.OnItemClickCallback {
+            override fun onItemClicked(user: User) {
                 showSelectedItem(user)
             }
         })
@@ -51,12 +51,10 @@ class MainActivity : AppCompatActivity() {
         searchView.queryHint = resources.getString(R.string.search_hint)
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, SearchFragment())
-                    .addToBackStack(null)
-                    .commit()
+                getSearchResult(query)
                 return true
             }
+
             override fun onQueryTextChange(newText: String): Boolean {
                 return false
             }
@@ -66,11 +64,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun getListGitUsers() {
         showLoading(true)
-
         val url = "https://api.github.com/users"
-        val client = AsyncHttpClient()
-        client.addHeader("Authorization", Companion.TOKEN)
-        client.addHeader("User-Agent", "request")
+        val client = Companion.getAsyncHttpClient()
         client.get(url, object : AsyncHttpResponseHandler() {
             override fun onSuccess(
                 statusCode: Int,
@@ -78,18 +73,11 @@ class MainActivity : AppCompatActivity() {
                 responseBody: ByteArray
             ) {
                 binding.progressBarMain.visibility = View.INVISIBLE
-                val listUser = ArrayList<GitUser>()
+                val listUser = ArrayList<User>()
                 val result = String(responseBody)
                 try {
                     val jsonArray = JSONArray(result)
-                    for (i in 0 until jsonArray.length()) {
-                        val jsonObject = jsonArray.getJSONObject(i)
-                        val user = GitUser()
-                        user.login = jsonObject.getString("login")
-                        user.avatar_url = jsonObject.getString("avatar_url")
-                        user.url = jsonObject.getString("url")
-                        listUser.add(user)
-                    }
+                    listUser.addAll(parseListGitUser(jsonArray))
                 } catch (e: Exception) {
                     Toast.makeText(this@MainActivity, e.message, Toast.LENGTH_SHORT).show()
                     e.printStackTrace()
@@ -118,11 +106,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun getSearchResult(query: String) {
         showLoading(true)
-
         val url = "https://api.github.com/search/users?q=$query"
-        val client = AsyncHttpClient()
-        client.addHeader("Authorization", Companion.TOKEN)
-        client.addHeader("User-Agent", "request")
+        val client = Companion.getAsyncHttpClient()
         client.get(url, object : AsyncHttpResponseHandler() {
             override fun onSuccess(
                 statusCode: Int,
@@ -130,17 +115,14 @@ class MainActivity : AppCompatActivity() {
                 responseBody: ByteArray
             ) {
                 binding.progressBarMain.visibility = View.INVISIBLE
-                val listUser = ArrayList<GitUser>()
+                val listUser = ArrayList<User>()
                 val result = String(responseBody)
                 try {
-                    val jsonArray = JSONArray(result)
-                    for (i in 0 until jsonArray.length()) {
-                        val jsonObject = jsonArray.getJSONObject(i)
-                        val user = GitUser()
-                        user.login = jsonObject.getString("login")
-                        user.avatar_url = jsonObject.getString("avatar_url")
-                        user.url = jsonObject.getString("url")
-                        listUser.add(user)
+                    val responseObject = JSONObject(result)
+                    val foundCount = responseObject.getInt("total_count")
+                    val jsonArray = responseObject.getJSONArray("items")
+                    if (foundCount > 0) {
+                        listUser.addAll(parseListGitUser(jsonArray))
                     }
                 } catch (e: Exception) {
                     Toast.makeText(this@MainActivity, e.message, Toast.LENGTH_SHORT).show()
@@ -168,8 +150,18 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun showSelectedItem(user: GitUser) {
-        val moveWithObjectIntent = Intent(this@MainActivity, GitUserDetailsActivity::class.java)
+    private fun parseListGitUser(jsonArray: JSONArray): ArrayList<User> {
+        val listUser = ArrayList<User>()
+        for (i in 0 until jsonArray.length()) {
+            val jsonObject = jsonArray.getJSONObject(i)
+            val user = User(jsonObject)
+            listUser.add(user)
+        }
+        return listUser
+    }
+
+    private fun showSelectedItem(user: User) {
+        val moveWithObjectIntent = Intent(this@MainActivity, UserDetailsActivity::class.java)
         moveWithObjectIntent.putExtra(Companion.USER_URL, user.url)
         startActivity(moveWithObjectIntent)
     }

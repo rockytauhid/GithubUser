@@ -13,10 +13,10 @@
         android:id="@+id/fragment_container" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_gitusers"
+        android:id="@+id/rv_users"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/item_row_gituser" />
+        tools:listitem="@layout/item_row_user" />
 
     <ProgressBar
         android:id="@+id/progressBarMain"

@@ -6,21 +6,21 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.dicoding.githubuser.databinding.ItemRowGituserBinding
+import com.dicoding.githubuser.databinding.ItemRowUserBinding
 
-class ListGitUserAdapter(): RecyclerView.Adapter<ListGitUserAdapter.ListViewHolder>() {
+class ListUserAdapter: RecyclerView.Adapter<ListUserAdapter.ListViewHolder>() {
 
-    private val mData = ArrayList<GitUser>()
+    private val mData = ArrayList<User>()
     private var onItemClickCallback: OnItemClickCallback? = null
 
-    fun setData(items: ArrayList<GitUser>) {
+    fun setData(items: ArrayList<User>) {
         mData.clear()
         mData.addAll(items)
         notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ListViewHolder {
-        val mView = LayoutInflater.from(viewGroup.context).inflate(R.layout.item_row_gituser, viewGroup, false)
+        val mView = LayoutInflater.from(viewGroup.context).inflate(R.layout.item_row_user, viewGroup, false)
         return ListViewHolder(mView)
     }
 
@@ -35,8 +35,8 @@ class ListGitUserAdapter(): RecyclerView.Adapter<ListGitUserAdapter.ListViewHold
     }
 
     inner class ListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val binding = ItemRowGituserBinding.bind(itemView)
-        fun bind(user: GitUser) {
+        private val binding = ItemRowUserBinding.bind(itemView)
+        fun bind(user: User) {
             with(binding) {
                 Glide.with(itemView.context)
                     .load(user.avatar_url)
@@ -50,6 +50,6 @@ class ListGitUserAdapter(): RecyclerView.Adapter<ListGitUserAdapter.ListViewHold
     }
 
     interface OnItemClickCallback {
-        fun onItemClicked(user: GitUser)
+        fun onItemClicked(user: User)
     }
 }

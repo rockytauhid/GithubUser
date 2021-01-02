@@ -10,11 +10,12 @@ android {
 
     defaultConfig {
         applicationId "com.dicoding.githubuser"
-        minSdkVersion 22
+        minSdkVersion 23
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "API_KEY", "\"df9d330b36a3da317adac1607bdc91c951347ad9\"")
     }
     buildTypes {
         release {
@@ -25,7 +26,6 @@ android {
     buildFeatures {
         viewBinding = true
     }
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -50,10 +50,9 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'com.android.support.constraint:constraint-layout:2.0.4'
     implementation 'de.hdodenhof:circleimageview:3.1.0'
-    implementation 'com.github.bumptech.glide:glide:4.9.0'
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation 'com.loopj.android:android-async-http:1.4.9'
-    implementation 'com.google.android.material:material:1.2.1'
 
     testImplementation group: 'org.mockito', name: 'mockito-core', version: '3.0.0'
     testImplementation 'org.mockito:mockito-inline:3.0.0'

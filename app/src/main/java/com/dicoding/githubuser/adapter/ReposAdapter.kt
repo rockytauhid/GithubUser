@@ -1,26 +1,26 @@
-package com.dicoding.githubuser
+package com.dicoding.githubuser.adapter
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
-import com.dicoding.githubuser.databinding.ItemRowUserBinding
+import com.dicoding.githubuser.R
+import com.dicoding.githubuser.databinding.ItemRowReposBinding
+import com.dicoding.githubuser.model.Repo
 
-class ListUserAdapter: RecyclerView.Adapter<ListUserAdapter.ListViewHolder>() {
+class ReposAdapter: RecyclerView.Adapter<ReposAdapter.ListViewHolder>() {
 
-    private val mData = ArrayList<User>()
+    private val mData = ArrayList<Repo>()
     private var onItemClickCallback: OnItemClickCallback? = null
 
-    fun setData(items: ArrayList<User>) {
+    fun setData(items: ArrayList<Repo>) {
         mData.clear()
         mData.addAll(items)
         notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ListViewHolder {
-        val mView = LayoutInflater.from(viewGroup.context).inflate(R.layout.item_row_user, viewGroup, false)
+        val mView = LayoutInflater.from(viewGroup.context).inflate(R.layout.item_row_repos, viewGroup, false)
         return ListViewHolder(mView)
     }
 
@@ -35,21 +35,17 @@ class ListUserAdapter: RecyclerView.Adapter<ListUserAdapter.ListViewHolder>() {
     }
 
     inner class ListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val binding = ItemRowUserBinding.bind(itemView)
-        fun bind(user: User) {
+        private val binding = ItemRowReposBinding.bind(itemView)
+        fun bind(repo: Repo) {
             with(binding) {
-                Glide.with(itemView.context)
-                    .load(user.avatar_url)
-                    .apply(RequestOptions().override(55, 55))
-                    .into(imgAvatar)
-                txtLogin.text = user.login
+                txtRepos.text = repo.name
 
-                itemView.setOnClickListener { onItemClickCallback?.onItemClicked(user) }
+                itemView.setOnClickListener { onItemClickCallback?.onItemClicked(repo.htmlUrl.toString()) }
             }
         }
     }
 
     interface OnItemClickCallback {
-        fun onItemClicked(user: User)
+        fun onItemClicked(repos: String)
     }
 }

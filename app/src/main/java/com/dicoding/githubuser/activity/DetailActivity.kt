@@ -5,6 +5,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.dicoding.githubuser.adapter.SectionsPagerAdapter
 import com.dicoding.githubuser.databinding.ActivityDetailBinding
 import com.dicoding.githubuser.model.Companion
@@ -27,12 +28,16 @@ class DetailActivity : AppCompatActivity() {
 
         val user = intent.getParcelableExtra<User>(Companion.EXTRA_USER)
 
-        model = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(DetailViewModel::class.java)
+        model = ViewModelProvider(
+            this,
+            ViewModelProvider.NewInstanceFactory()
+        ).get(DetailViewModel::class.java)
         showLoading(true)
         model.setUserDetail(user?.url.toString())
         model.getUserDetail().observe(this, { data ->
             if (data != null) {
-                Glide.with(this@DetailActivity).load(data.avatarUrl).into(binding.imgItemAvatar)
+                Glide.with(this@DetailActivity).load(data.avatarUrl)
+                    .apply(RequestOptions().override(180, 180)).into(binding.imgItemAvatar)
 
                 if (!data.name.isNullOrEmpty())
                     binding.tvItemName.text = data.name
@@ -74,7 +79,7 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun showLoading(state: Boolean) {
-       if (state) {
+        if (state) {
             binding.progressBarDetails.visibility = View.VISIBLE
         } else {
             binding.progressBarDetails.visibility = View.GONE

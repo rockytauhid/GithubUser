@@ -78,7 +78,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
-                if (newText.isNullOrEmpty()) {
+                if (newText.isEmpty()) {
                     getListUsers()
                 }
                 return true

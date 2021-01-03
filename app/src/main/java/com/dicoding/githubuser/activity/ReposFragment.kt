@@ -1,28 +1,30 @@
 package com.dicoding.githubuser.activity
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.githubuser.R
 import com.dicoding.githubuser.adapter.ReposAdapter
-import com.dicoding.githubuser.databinding.FragmentReposBinding
+import com.dicoding.githubuser.model.Companion
 import com.dicoding.githubuser.model.User
 import com.dicoding.githubuser.viewmodel.DetailViewModel
+import kotlinx.android.synthetic.main.fragment_repos.*
+
 
 class ReposFragment : Fragment() {
     private lateinit var adapter: ReposAdapter
-    private lateinit var binding: FragmentReposBinding
     private lateinit var model: DetailViewModel
     private var reposUrl: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val user = activity?.intent?.getParcelableExtra<User>(com.dicoding.githubuser.model.Companion.EXTRA_USER)
+        val user = activity?.intent?.getParcelableExtra<User>(Companion.EXTRA_USER)
         reposUrl = user?.reposUrl
     }
 
@@ -35,38 +37,33 @@ class ReposFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentReposBinding.inflate(layoutInflater)
 
         adapter = ReposAdapter()
         adapter.notifyDataSetChanged()
 
-        model = ViewModelProvider(requireActivity(), ViewModelProvider.NewInstanceFactory()).get(DetailViewModel::class.java)
-        showLoading(false)
-        model.setListRepos(reposUrl)
-        model.getListRepos().observe(requireActivity(), { items ->
-            if (items != null) {
-                adapter.setData(items)
-                showLoading(true)
+        rv_repos.layoutManager = LinearLayoutManager(activity)
+        rv_repos.adapter = adapter
+
+        model = ViewModelProvider(requireActivity(), ViewModelProvider.NewInstanceFactory()).get(
+            DetailViewModel::class.java
+        )
+        model.getPublicRepos().observe(requireActivity(), { data ->
+            if (data != null) {
+                tv_repos.text = "$data ${getString(R.string.text_repositories)}"
             }
         })
-        val repos = model.getPublicRepos()
-        binding.tvRepos.text = "$repos ${getString(R.string.text_repositories)}"
-        binding.rvRepos.layoutManager = LinearLayoutManager(activity)
-        binding.rvRepos.adapter = adapter
-        binding.rvRepos.setHasFixedSize(true)
+        model.setListRepos(reposUrl)
+        model.getListRepos().observe(requireActivity(), { data ->
+            if (data != null) {
+                adapter.setData(data)
+            }
+        })
 
         adapter.setOnItemClickCallback(object : ReposAdapter.OnItemClickCallback {
-            override fun onItemClicked(repos: String) {
-                Toast.makeText(activity, repos, Toast.LENGTH_SHORT).show()
+            override fun onItemClicked(htmlUrl: String) {
+                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(htmlUrl))
+                startActivity(browserIntent)
             }
         })
-    }
-
-    private fun showLoading(state: Boolean) {
-        /*if (state) {
-            binding.progressBarDetails.visibility = View.VISIBLE
-        } else {
-            binding.progressBarDetails.visibility = View.GONE
-        }*/
     }
 }

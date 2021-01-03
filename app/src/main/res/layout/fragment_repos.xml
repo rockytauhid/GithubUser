@@ -12,7 +12,7 @@
         android:layout_margin="16dp"
         android:textSize="14sp"
         android:gravity="end"
-        tools:text="@string/placeholder_repository"/>
+        tools:text="@string/text_repositories"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_repos"

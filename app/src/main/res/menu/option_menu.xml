@@ -2,9 +2,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/search"
+        android:id="@+id/action_search"
         android:icon="@android:drawable/ic_menu_search"
-        android:title="@string/search"
+        android:title="@string/text_search"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
-        app:showAsAction="collapseActionView|always" />
+        app:showAsAction="collapseActionView|ifRoom" />
+    <item
+        android:id="@+id/action_language_settings"
+        android:title="@string/language_settings"
+        app:showAsAction="never"/>
 </menu>

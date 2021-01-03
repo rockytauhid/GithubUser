@@ -37,15 +37,13 @@ class ReposAdapter: RecyclerView.Adapter<ReposAdapter.ListViewHolder>() {
     inner class ListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val binding = ItemRowReposBinding.bind(itemView)
         fun bind(repo: Repo) {
-            with(binding) {
-                txtRepos.text = repo.name
+            binding.txtRepos.text = repo.name
 
-                itemView.setOnClickListener { onItemClickCallback?.onItemClicked(repo.htmlUrl.toString()) }
-            }
+            itemView.setOnClickListener { onItemClickCallback?.onItemClicked(repo.htmlUrl.toString()) }
         }
     }
 
     interface OnItemClickCallback {
-        fun onItemClicked(repos: String)
+        fun onItemClicked(htmlUrl: String)
     }
 }

@@ -1,16 +1,20 @@
-<resources>
-    <string name="app_name">Github User</string>
-    <string name="user_photo">User Photo</string>
-    <string name="text_name">Name</string>
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name" translatable="false">Github User</string>
+    <string name="placeholder_result" translatable="false">Top 20 users</string>
+    <string name="placeholder_name" translatable="false">Homer Simpsons</string>
+    <string name="placeholder_login" translatable="false">hsimpsons</string>
+    <string name="placeholder_company" translatable="false">Nuclear Power Plant</string>
+    <string name="placeholder_location" translatable="false">Springfield</string>
+    <string name="text_github_logo">Github Logo</string>
+    <string name="user_photo">User photo</string>
     <string name="text_followers">Followers</string>
     <string name="text_following">Following</string>
     <string name="text_repositories">Repositories</string>
-    <string name="text_github_logo">Github Logo</string>
-    <string name="placeholder_name">Homer Simpsons</string>
-    <string name="placeholder_login">hsimpsons</string>
-    <string name="placeholder_company">Nuclear Power Plant</string>
-    <string name="placeholder_location">Springfield</string>
-    <string name="search">Search</string>
-    <string name="search_hint">Masukkan kata</string>
-    <string name="placeholder_repository">99 repositories</string>
+    <string name="text_top" translatable="false">Top</string>
+    <string name="text_found">Found</string>
+    <string name="text_users">users</string>
+    <string name="text_search">Search</string>
+    <string name="search_hint">Enter username</string>
+    <string name="language_settings">Language Settings</string>
 </resources>

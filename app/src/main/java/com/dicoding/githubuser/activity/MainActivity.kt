@@ -4,7 +4,9 @@ import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.provider.Settings
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
@@ -34,20 +36,20 @@ class MainActivity : AppCompatActivity() {
         binding.rvUsers.adapter = adapter
         binding.rvUsers.setHasFixedSize(true)
 
-        model = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(MainViewModel::class.java)
+        model = ViewModelProvider(
+            this,
+            ViewModelProvider.NewInstanceFactory()
+        ).get(MainViewModel::class.java)
         showLoading(true)
         model.setListUsers()
-        model.getListUsers().observe(this, { items ->
-            if (items != null) {
-                adapter.setData(items)
-                showLoading(false)
-            }
-        })
+        getListUsers()
 
         adapter.setOnItemClickCallback(object :
             UsersAdapter.OnItemClickCallback {
             override fun onItemClicked(user: User) {
-                showSelectedItem(user)
+                val moveWithObjectIntent = Intent(this@MainActivity, DetailActivity::class.java)
+                moveWithObjectIntent.putExtra(Companion.EXTRA_USER, user)
+                startActivity(moveWithObjectIntent)
             }
         })
     }
@@ -57,16 +59,18 @@ class MainActivity : AppCompatActivity() {
         inflater.inflate(R.menu.option_menu, menu)
 
         val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
-        val searchView = menu.findItem(R.id.search).actionView as SearchView
+        val searchView = menu.findItem(R.id.action_search).actionView as SearchView
         searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
         searchView.queryHint = resources.getString(R.string.search_hint)
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 showLoading(true)
-                model.setListSearch(query)
-                model.getListSearch().observe(this@MainActivity, { items ->
-                    if (items != null) {
-                        adapter.setData(items)
+                model.setListSearch(query.trim())
+                model.getListSearch().observe(this@MainActivity, { data ->
+                    if (data != null) {
+                        binding.tvResult.text =
+                            "${getString(R.string.text_found)} ${data.size} ${getString(R.string.text_users)}"
+                        adapter.setData(data)
                         showLoading(false)
                     }
                 })
@@ -74,16 +78,32 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
-                return false
+                if (newText.isNullOrEmpty()) {
+                    getListUsers()
+                }
+                return true
             }
         })
         return true
     }
 
-    private fun showSelectedItem(user: User) {
-        val moveWithObjectIntent = Intent(this@MainActivity, DetailActivity::class.java)
-        moveWithObjectIntent.putExtra(Companion.EXTRA_USER, user)
-        startActivity(moveWithObjectIntent)
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.action_language_settings) {
+            val mIntent = Intent(Settings.ACTION_LOCALE_SETTINGS)
+            startActivity(mIntent)
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun getListUsers(){
+        model.getListUsers().observe(this@MainActivity, { data ->
+            if (data != null) {
+                binding.tvResult.text =
+                    "${getString(R.string.text_top)} ${data.size} ${getString(R.string.text_users)}"
+                adapter.setData(data)
+                showLoading(false)
+            }
+        })
     }
 
     private fun showLoading(state: Boolean) {

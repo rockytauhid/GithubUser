@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="text_github_logo">Logo Github</string>
+    <string name="user_photo">foto pengguna</string>
+    <string name="text_followers">Pengikut</string>
+    <string name="text_following">Mengikuti</string>
+    <string name="text_repositories">Repositori</string>
+    <string name="text_found">Ditemukan</string>
+    <string name="text_users">pengguna</string>
+    <string name="text_search">Pencarian</string>
+    <string name="search_hint">Masukkan pengguna</string>
+    <string name="language_settings">Pengaturan</string>
+</resources>

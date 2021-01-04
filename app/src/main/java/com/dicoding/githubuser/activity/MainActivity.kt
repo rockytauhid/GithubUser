@@ -18,8 +18,6 @@ import com.dicoding.githubuser.databinding.ActivityMainBinding
 import com.dicoding.githubuser.model.Companion
 import com.dicoding.githubuser.model.User
 import com.dicoding.githubuser.viewmodel.MainViewModel
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_follow.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var adapter: UsersAdapter
@@ -45,18 +43,22 @@ class MainActivity : AppCompatActivity() {
             ViewModelProvider.NewInstanceFactory()
         ).get(MainViewModel::class.java)
 
-        if (model.getListSearch().value == null) {
+        if (model.getListUsers().value == null) {
             model.setListUsers()
             binding.tvResult.text =
-                "${getString(R.string.text_top)} ${getString(R.string.text_users)}"
+                StringBuilder("${getString(R.string.text_top)} ${getString(R.string.text_users)}")
         }
         if (savedInstanceState != null) {
             searchQuery = savedInstanceState.getString(Companion.STATE_QUERY)
             val result = savedInstanceState.getString(Companion.STATE_RESULT)
-            tv_result.text = result
+            binding.tvResult.text = result
         }
-        getListUsers()
-        showLoading(false)
+        model.getListUsers().observe(this, { data ->
+            if (data != null) {
+                adapter.setData(data)
+                showLoading(false)
+            }
+        })
 
         adapter.setOnItemClickCallback(object :
             UsersAdapter.OnItemClickCallback {
@@ -89,7 +91,7 @@ class MainActivity : AppCompatActivity() {
                 model.getTotalCount().observe(this@MainActivity, { data ->
                     if (data != null) {
                         binding.tvResult.text =
-                            "${getString(R.string.text_found)} $data ${getString(R.string.text_users)}"
+                            StringBuilder("${getString(R.string.text_found)} $data ${getString(R.string.text_users)}")
                         if (data > 30)
                             binding.tvResult.append(" (${getString(R.string.text_top)})")
                     }
@@ -97,9 +99,9 @@ class MainActivity : AppCompatActivity() {
                 model.getListSearch().observe(this@MainActivity, { data ->
                     if (data != null) {
                         adapter.setData(data)
+                        showLoading(false)
                     }
                 })
-                showLoading(false)
                 return true
             }
 
@@ -109,9 +111,13 @@ class MainActivity : AppCompatActivity() {
                     showLoading(true)
                     model.setListUsers()
                     binding.tvResult.text =
-                        "${getString(R.string.text_top)} ${getString(R.string.text_users)}"
-                    getListUsers()
-                    showLoading(false)
+                        StringBuilder("${getString(R.string.text_top)} ${getString(R.string.text_users)}")
+                    model.getListUsers().observe(this@MainActivity, { data ->
+                        if (data != null) {
+                            adapter.setData(data)
+                            showLoading(false)
+                        }
+                    })
                 }
                 return true
             }
@@ -130,15 +136,7 @@ class MainActivity : AppCompatActivity() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString(Companion.STATE_QUERY, searchQuery)
-        outState.putString(Companion.STATE_RESULT, tv_result.text.toString())
-    }
-
-    private fun getListUsers() {
-        model.getListUsers().observe(this@MainActivity, { data ->
-            if (data != null) {
-                adapter.setData(data)
-            }
-        })
+        outState.putString(Companion.STATE_RESULT, binding.tvResult.text.toString())
     }
 
     private fun showLoading(state: Boolean) {

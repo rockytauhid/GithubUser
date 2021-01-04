@@ -10,13 +10,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.githubuser.R
 import com.dicoding.githubuser.adapter.UsersAdapter
+import com.dicoding.githubuser.databinding.FragmentFollowBinding
 import com.dicoding.githubuser.model.Companion
 import com.dicoding.githubuser.model.User
 import com.dicoding.githubuser.viewmodel.DetailViewModel
-import kotlinx.android.synthetic.main.fragment_follow.*
 
 class FollowFragment : Fragment() {
     private lateinit var adapter: UsersAdapter
+    private lateinit var binding: FragmentFollowBinding
     private lateinit var model: DetailViewModel
     private var followersUrl: String? = null
     private var followingUrl: String? = null
@@ -31,54 +32,56 @@ class FollowFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_follow, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    ): View {
+        binding = FragmentFollowBinding.inflate(layoutInflater)
 
         adapter = UsersAdapter()
         adapter.notifyDataSetChanged()
 
-        rv_follow.layoutManager = LinearLayoutManager(activity)
-        rv_follow.adapter = adapter
+        binding.rvFollow.layoutManager = LinearLayoutManager(activity)
+        binding.rvFollow.adapter = adapter
+        return binding.root
+    }
 
-        showLoading(true)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         model = ViewModelProvider(requireActivity(), ViewModelProvider.NewInstanceFactory()).get(DetailViewModel::class.java)
         when (arguments?.getInt(Companion.ARG_SECTION_NUMBER, 0)) {
             0 -> {
-                model.getFollowers().observe(requireActivity(), { data ->
+                showLoading(true)
+                model.getFollowers().observe(viewLifecycleOwner, { data ->
                     if (data != null) {
-                        tv_follow.text = "$data ${getString(R.string.text_followers)}"
+                        binding.tvFollow.text = StringBuilder("$data ${getString(R.string.text_followers)}")
                         if (data > 30)
-                            tv_follow.append(" (" + getString(R.string.text_top) + ")")
+                            binding.tvFollow.append(" (" + getString(R.string.text_top) + ")")
                     }
                 })
                 model.setListFollowers(followersUrl)
-                model.getListFollowers().observe(requireActivity(), { data ->
+                model.getListFollowers().observe(viewLifecycleOwner, { data ->
                     if (data != null) {
                         adapter.setData(data)
+                        showLoading(false)
                     }
                 })
             }
             1 -> {
-                model.getFollowing().observe(requireActivity(), { data ->
+                showLoading(true)
+                model.getFollowing().observe(viewLifecycleOwner, { data ->
                     if (data != null) {
-                        tv_follow.text = "$data ${getString(R.string.text_following)}"
+                        binding.tvFollow.text = StringBuilder("$data ${getString(R.string.text_following)}")
                         if (data > 30)
-                            tv_follow.append(" (" + getString(R.string.text_top) + ")")
+                            binding.tvFollow.append(" (" + getString(R.string.text_top) + ")")
                     }
                 })
                 model.setListFollowing(followingUrl)
-                model.getListFollowing().observe(requireActivity(), { data ->
+                model.getListFollowing().observe(viewLifecycleOwner, { data ->
                     if (data != null) {
                         adapter.setData(data)
+                        showLoading(false)
                     }
                 })
             }
         }
-        showLoading(false)
 
         adapter.setOnItemClickCallback(object :
             UsersAdapter.OnItemClickCallback {
@@ -92,9 +95,9 @@ class FollowFragment : Fragment() {
 
     private fun showLoading(state: Boolean) {
         if (state) {
-            progressBarFollow.visibility = View.VISIBLE
+            binding.progressBarFollow.visibility = View.VISIBLE
         } else {
-            progressBarFollow.visibility = View.GONE
+            binding.progressBarFollow.visibility = View.GONE
         }
     }
 }

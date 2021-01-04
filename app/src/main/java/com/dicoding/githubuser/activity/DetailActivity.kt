@@ -12,7 +12,6 @@ import com.dicoding.githubuser.model.Companion
 import com.dicoding.githubuser.model.User
 import com.dicoding.githubuser.viewmodel.DetailViewModel
 
-
 class DetailActivity : AppCompatActivity() {
     private lateinit var adapter: SectionsPagerAdapter
     private lateinit var binding: ActivityDetailBinding
@@ -36,7 +35,7 @@ class DetailActivity : AppCompatActivity() {
         model.setUserDetail(user?.url.toString())
         model.getUserDetail().observe(this, { data ->
             if (data != null) {
-                Glide.with(this@DetailActivity).load(data.avatarUrl)
+                Glide.with(this).load(data.avatarUrl)
                     .apply(RequestOptions().override(180, 180)).into(binding.imgItemAvatar)
                 binding.tvItemName.text = data.name
                 binding.tvItemLogin.text = data.login

@@ -11,14 +11,15 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.githubuser.R
 import com.dicoding.githubuser.adapter.ReposAdapter
+import com.dicoding.githubuser.databinding.FragmentReposBinding
 import com.dicoding.githubuser.model.Companion
 import com.dicoding.githubuser.model.User
 import com.dicoding.githubuser.viewmodel.DetailViewModel
-import kotlinx.android.synthetic.main.fragment_repos.*
 
 
 class ReposFragment : Fragment() {
     private lateinit var adapter: ReposAdapter
+    private lateinit var binding: FragmentReposBinding
     private lateinit var model: DetailViewModel
     private var reposUrl: String? = null
 
@@ -31,37 +32,37 @@ class ReposFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_repos, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    ): View {
+        binding = FragmentReposBinding.inflate(layoutInflater)
 
         adapter = ReposAdapter()
         adapter.notifyDataSetChanged()
 
-        rv_repos.layoutManager = LinearLayoutManager(activity)
-        rv_repos.adapter = adapter
+        binding.rvRepos.layoutManager = LinearLayoutManager(activity)
+        binding.rvRepos.adapter = adapter
+        return binding.root
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         showLoading(true)
         model = ViewModelProvider(requireActivity(), ViewModelProvider.NewInstanceFactory()).get(
             DetailViewModel::class.java
         )
-        model.getPublicRepos().observe(requireActivity(), { data ->
+        model.getPublicRepos().observe(viewLifecycleOwner, { data ->
             if (data != null) {
-                tv_repos.text = "$data ${getString(R.string.text_repositories)}"
+                binding.tvRepos.text = StringBuilder("$data ${getString(R.string.text_repositories)}")
                 if (data > 30)
-                    tv_repos.append(" (${getString(R.string.text_top)})")
+                    binding.tvRepos.append(" (${getString(R.string.text_top)})")
             }
         })
         model.setListRepos(reposUrl)
-        model.getListRepos().observe(requireActivity(), { data ->
+        model.getListRepos().observe(viewLifecycleOwner, { data ->
             if (data != null) {
                 adapter.setData(data)
+                showLoading(false)
             }
         })
-        showLoading(false)
 
         adapter.setOnItemClickCallback(object : ReposAdapter.OnItemClickCallback {
             override fun onItemClicked(htmlUrl: String) {
@@ -73,9 +74,9 @@ class ReposFragment : Fragment() {
 
     private fun showLoading(state: Boolean) {
         if (state) {
-            progressBarRepos.visibility = View.VISIBLE
+            binding.progressBarRepos.visibility = View.VISIBLE
         } else {
-            progressBarRepos.visibility = View.GONE
+            binding.progressBarRepos.visibility = View.GONE
         }
     }
 }

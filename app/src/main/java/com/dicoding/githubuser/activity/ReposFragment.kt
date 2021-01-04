@@ -44,12 +44,15 @@ class ReposFragment : Fragment() {
         rv_repos.layoutManager = LinearLayoutManager(activity)
         rv_repos.adapter = adapter
 
+        showLoading(true)
         model = ViewModelProvider(requireActivity(), ViewModelProvider.NewInstanceFactory()).get(
             DetailViewModel::class.java
         )
         model.getPublicRepos().observe(requireActivity(), { data ->
             if (data != null) {
                 tv_repos.text = "$data ${getString(R.string.text_repositories)}"
+                if (data > 30)
+                    tv_repos.append(" (${getString(R.string.text_top)})")
             }
         })
         model.setListRepos(reposUrl)
@@ -58,6 +61,7 @@ class ReposFragment : Fragment() {
                 adapter.setData(data)
             }
         })
+        showLoading(false)
 
         adapter.setOnItemClickCallback(object : ReposAdapter.OnItemClickCallback {
             override fun onItemClicked(htmlUrl: String) {
@@ -65,5 +69,13 @@ class ReposFragment : Fragment() {
                 startActivity(browserIntent)
             }
         })
+    }
+
+    private fun showLoading(state: Boolean) {
+        if (state) {
+            progressBarRepos.visibility = View.VISIBLE
+        } else {
+            progressBarRepos.visibility = View.GONE
+        }
     }
 }

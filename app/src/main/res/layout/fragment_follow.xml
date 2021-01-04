@@ -5,6 +5,13 @@
     android:layout_height="match_parent"
     tools:context=".activity.FollowFragment">
 
+    <ProgressBar
+        android:id="@+id/progressBarFollow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        style="?android:attr/progressBarStyle" />
+
     <TextView
         android:id="@+id/tv_follow"
         android:layout_width="match_parent"

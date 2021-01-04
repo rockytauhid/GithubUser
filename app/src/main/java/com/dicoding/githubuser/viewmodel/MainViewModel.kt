@@ -12,8 +12,9 @@ import org.json.JSONArray
 import org.json.JSONObject
 
 class MainViewModel : ViewModel() {
-    private val listUsers = MutableLiveData<ArrayList<User>>()
+    private var listUsers = MutableLiveData<ArrayList<User>>()
     private val listSearch = MutableLiveData<ArrayList<User>>()
+    private val totalCount = MutableLiveData<Int>()
 
     fun setListUsers() {
         val url = "https://api.github.com/users"
@@ -62,7 +63,10 @@ class MainViewModel : ViewModel() {
         })
     }
 
-    fun getListUsers(): LiveData<java.util.ArrayList<User>> {
+    fun getListUsers(): LiveData<ArrayList<User>> {
+        if (listSearch.value != null){
+            listUsers = listSearch
+        }
         return listUsers
     }
 
@@ -78,6 +82,8 @@ class MainViewModel : ViewModel() {
                 try {
                     val result = String(responseBody)
                     val responseObject = JSONObject(result)
+                    if (!query.isNullOrEmpty())
+                        totalCount.postValue(responseObject.getInt("total_count"))
                     val jsonArray = responseObject.getJSONArray("items")
                     val listItems = ArrayList<User>()
                     for (i in 0 until jsonArray.length()) {
@@ -114,7 +120,11 @@ class MainViewModel : ViewModel() {
         })
     }
 
-    fun getListSearch(): LiveData<java.util.ArrayList<User>> {
+    fun getListSearch(): LiveData<ArrayList<User>> {
         return listSearch
+    }
+
+    fun getTotalCount(): LiveData<Int> {
+        return totalCount
     }
 }

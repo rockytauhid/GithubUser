@@ -28,36 +28,20 @@ class DetailActivity : AppCompatActivity() {
 
         val user = intent.getParcelableExtra<User>(Companion.EXTRA_USER)
 
+        showLoading(true)
         model = ViewModelProvider(
             this,
             ViewModelProvider.NewInstanceFactory()
         ).get(DetailViewModel::class.java)
-        showLoading(true)
         model.setUserDetail(user?.url.toString())
         model.getUserDetail().observe(this, { data ->
             if (data != null) {
                 Glide.with(this@DetailActivity).load(data.avatarUrl)
                     .apply(RequestOptions().override(180, 180)).into(binding.imgItemAvatar)
-
-                if (!data.name.isNullOrEmpty())
-                    binding.tvItemName.text = data.name
-                else
-                    binding.tvItemName.visibility = View.GONE
-
-                if (!data.login.isNullOrEmpty())
-                    binding.tvItemLogin.text = data.login
-                else
-                    binding.tvItemLogin.visibility = View.GONE
-
-                if (!data.company.isNullOrEmpty())
-                    binding.tvItemCompany.text = data.company
-                else
-                    binding.tvItemCompany.visibility = View.GONE
-
-                if (!data.location.isNullOrEmpty())
-                    binding.tvItemLocation.text = data.location
-                else
-                    binding.tvItemLocation.visibility = View.GONE
+                binding.tvItemName.text = data.name
+                binding.tvItemLogin.text = data.login
+                binding.tvItemCompany.text = data.company
+                binding.tvItemLocation.text = data.location
 
                 showLoading(false)
             }

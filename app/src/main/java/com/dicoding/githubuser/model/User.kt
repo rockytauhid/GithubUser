@@ -10,5 +10,6 @@ data class User(
     var url: String? = null,
     var followersUrl: String? = null,
     var followingUrl: String? = null,
-    var reposUrl: String? = null
+    var reposUrl: String? = null,
+    var totalCount: Int = 0
 ) : Parcelable

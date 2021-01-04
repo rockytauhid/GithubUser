@@ -11,7 +11,7 @@
     <string name="text_followers">Followers</string>
     <string name="text_following">Following</string>
     <string name="text_repositories">Repositories</string>
-    <string name="text_top" translatable="false">Top</string>
+    <string name="text_top" translatable="false">Top 30</string>
     <string name="text_found">Found</string>
     <string name="text_users">users</string>
     <string name="text_search">Search</string>

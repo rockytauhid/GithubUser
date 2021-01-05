@@ -87,19 +87,13 @@ class MainActivity : AppCompatActivity() {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 showLoading(true)
-                model.setListSearch(query.trim())
+                model.setListUsers(query.trim())
                 model.getTotalCount().observe(this@MainActivity, { data ->
                     if (data != null) {
                         binding.tvResult.text =
                             StringBuilder("${getString(R.string.text_found)} $data ${getString(R.string.text_users)}")
                         if (data > 30)
                             binding.tvResult.append(" (${getString(R.string.text_top)})")
-                    }
-                })
-                model.getListSearch().observe(this@MainActivity, { data ->
-                    if (data != null) {
-                        adapter.setData(data)
-                        showLoading(false)
                     }
                 })
                 return true
@@ -112,12 +106,6 @@ class MainActivity : AppCompatActivity() {
                     model.setListUsers()
                     binding.tvResult.text =
                         StringBuilder("${getString(R.string.text_top)} ${getString(R.string.text_users)}")
-                    model.getListUsers().observe(this@MainActivity, { data ->
-                        if (data != null) {
-                            adapter.setData(data)
-                            showLoading(false)
-                        }
-                    })
                 }
                 return true
             }

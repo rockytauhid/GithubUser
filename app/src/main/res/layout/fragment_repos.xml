@@ -16,15 +16,15 @@
         android:id="@+id/tv_repos"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_margin="@dimen/general_padding"
         style="@style/TextContent.Subtitle"
         tools:text="@string/text_repositories"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_repos"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="36dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/rv_padding"
         tools:listitem="@layout/item_row_repos" />
 
 </FrameLayout>

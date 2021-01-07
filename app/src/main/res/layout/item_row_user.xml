@@ -5,7 +5,7 @@
     android:id="@+id/item_row_user"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp">
+    android:padding="@dimen/general_padding">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/img_avatar"
@@ -20,7 +20,7 @@
 
     <TextView
         android:id="@+id/txt_login"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="@dimen/text_big_margin"
         app:layout_constraintStart_toEndOf="@id/img_avatar"
         app:layout_constraintTop_toTopOf="parent"
         style="@style/TextList"

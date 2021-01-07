@@ -5,11 +5,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Detail(
-    var login: String? = null,
-    var avatarUrl: String? = null,
-    var followersUrl: String? = null,
-    var followingUrl: String? = null,
-    var reposUrl: String? = null,
+    var htmlUrl: String? = null,
     var name: String? = null,
     var company: String? = null,
     var location: String? = null,

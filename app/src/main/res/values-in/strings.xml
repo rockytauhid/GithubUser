@@ -9,5 +9,8 @@
     <string name="text_users">pengguna</string>
     <string name="text_search">Pencarian</string>
     <string name="search_hint">Masukkan pengguna</string>
-    <string name="language_settings">Pengaturan</string>
+    <string name="action_share">Bagikan</string>
+    <string name="language_settings">Pengaturan bahasa</string>
+    <string name="mark_as_favourite">Tandai sebagai favorit</string>
+    <string name="share_using">Bagikan menggunakan</string>
 </resources>

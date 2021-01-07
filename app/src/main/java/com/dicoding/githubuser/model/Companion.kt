@@ -2,6 +2,7 @@ package com.dicoding.githubuser.model
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import com.dicoding.githubuser.BuildConfig
 import com.loopj.android.http.AsyncHttpClient
 
 class Companion {
@@ -22,9 +23,9 @@ class Companion {
 
         fun getAsyncHttpClient(): AsyncHttpClient{
             val client = AsyncHttpClient()
-            /*val token = BuildConfig.API_KEY
-            if (!token.isNullOrEmpty())
-                client.addHeader("Authorization", "token $token")*/
+            val token = BuildConfig.API_KEY
+            if (token.isNotEmpty())
+                client.addHeader("Authorization", "token $token")
             client.addHeader("User-Agent", "request")
             return  client
         }

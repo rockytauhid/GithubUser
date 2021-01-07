@@ -21,7 +21,7 @@
         android:id="@+id/tv_result"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="16dp"
+        android:paddingTop="@dimen/general_padding"
         style="@style/TextContent.Subtitle"
         app:layout_constraintBottom_toTopOf="@+id/rv_users"
         tools:text="@string/placeholder_result" />
@@ -30,7 +30,7 @@
         android:id="@+id/rv_users"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="@dimen/rv_padding"
         app:layout_constraintTop_toBottomOf="@+id/tv_result"
         tools:listitem="@layout/item_row_user" />
 

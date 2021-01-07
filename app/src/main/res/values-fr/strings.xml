@@ -9,5 +9,8 @@
     <string name="text_users">utilisateurs</string>
     <string name="text_search">Chercher</string>
     <string name="search_hint">Saisissez votre nom</string>
+    <string name="action_share">Partager</string>
     <string name="language_settings">Paramètres de langue</string>
+    <string name="mark_as_favourite">Marquer comme favori</string>
+    <string name="share_using">Partager en utilisant</string>
 </resources>

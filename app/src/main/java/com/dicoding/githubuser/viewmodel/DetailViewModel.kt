@@ -35,11 +35,7 @@ class DetailViewModel: ViewModel() {
                 try {
                     val responseObject = JSONObject(result)
                     val item = Detail()
-                    item.login = responseObject.getString("login")
-                    item.avatarUrl = responseObject.getString("avatar_url")
-                    item.followersUrl = responseObject.getString("followers_url")
-                    item.followingUrl = responseObject.getString("following_url")
-                    item.reposUrl = responseObject.getString("repos_url")
+                    item.htmlUrl = responseObject.getString("html_url")
                     item.name = responseObject.getString("name")
                     item.company = responseObject.getString("company")
                     item.location = responseObject.getString("location")

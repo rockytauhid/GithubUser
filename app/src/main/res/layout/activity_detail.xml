@@ -47,4 +47,14 @@
         android:id="@+id/content_scrolling"
         layout="@layout/content_scrolling" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
+        android:contentDescription="@string/mark_as_favourite"
+        app:layout_anchor="@id/app_bar"
+        app:layout_anchorGravity="bottom|end"
+        app:srcCompat="@android:drawable/star_big_off" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

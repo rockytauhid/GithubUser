@@ -15,6 +15,7 @@ import com.dicoding.githubuser.databinding.ActivityDetailBinding
 import com.dicoding.githubuser.model.Companion
 import com.dicoding.githubuser.model.User
 import com.dicoding.githubuser.viewmodel.DetailViewModel
+import com.google.android.material.snackbar.Snackbar
 
 
 class DetailActivity : AppCompatActivity() {
@@ -61,6 +62,11 @@ class DetailActivity : AppCompatActivity() {
         binding.contentScrolling.viewPager.adapter = adapter
         binding.contentScrolling.tabs.setupWithViewPager(binding.contentScrolling.viewPager)
         supportActionBar?.elevation = 0f
+
+        binding.fab.setOnClickListener { view ->
+            Snackbar.make(view, "Marked as favourite", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

@@ -8,6 +8,11 @@
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="collapseActionView|ifRoom" />
     <item
+        android:id="@+id/action_favorite"
+        android:icon="@android:drawable/btn_star_big_on"
+        android:title="@string/text_favorite"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/action_language_settings"
         android:title="@string/language_settings"
         app:showAsAction="never"/>

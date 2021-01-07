@@ -14,9 +14,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GithubUser"
         android:usesCleartextTraffic="true">
+        <activity android:name=".activity.FavoriteActivity" />
         <activity
             android:name=".activity.DetailActivity"
-            android:theme="@style/Theme.GithubUser.NoActionBar"/>
+            android:theme="@style/Theme.GithubUser.NoActionBar" />
         <activity
             android:name=".activity.SplashActivity"
             android:theme="@style/Theme.Design.NoActionBar">

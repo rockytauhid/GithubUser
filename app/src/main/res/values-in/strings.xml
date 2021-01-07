@@ -13,4 +13,6 @@
     <string name="language_settings">Pengaturan bahasa</string>
     <string name="mark_as_favourite">Tandai sebagai favorit</string>
     <string name="share_using">Bagikan menggunakan</string>
+    <string name="text_favorite">Favorit</string>
+    <string name="placeholder_favorite">Anda tidak punya favorit</string>
 </resources>

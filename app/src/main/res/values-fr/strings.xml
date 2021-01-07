@@ -13,4 +13,6 @@
     <string name="language_settings">Paramètres de langue</string>
     <string name="mark_as_favourite">Marquer comme favori</string>
     <string name="share_using">Partager en utilisant</string>
+    <string name="text_favorite">Favori</string>
+    <string name="placeholder_favorite">Tu n\'as pas de favori</string>
 </resources>

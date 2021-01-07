@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.rvUsers.layoutManager = LinearLayoutManager(this)
         binding.rvUsers.adapter = adapter
-        binding.rvUsers.setHasFixedSize(true)
+        //binding.rvUsers.setHasFixedSize(true)
 
         showLoading(true)
         model = ViewModelProvider(
@@ -114,7 +114,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.action_language_settings) {
+        if (item.itemId == R.id.action_favorite) {
+            val mIntent = Intent(this@MainActivity, FavoriteActivity::class.java)
+            startActivity(mIntent)
+        } else if (item.itemId == R.id.action_language_settings) {
             val mIntent = Intent(Settings.ACTION_LOCALE_SETTINGS)
             startActivity(mIntent)
         }

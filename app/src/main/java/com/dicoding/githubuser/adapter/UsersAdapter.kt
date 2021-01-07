@@ -10,7 +10,7 @@ import com.dicoding.githubuser.R
 import com.dicoding.githubuser.databinding.ItemRowUserBinding
 import com.dicoding.githubuser.model.User
 
-class UsersAdapter: RecyclerView.Adapter<UsersAdapter.ListViewHolder>() {
+class UsersAdapter : RecyclerView.Adapter<UsersAdapter.ListViewHolder>() {
 
     private val mData = ArrayList<User>()
     private var onItemClickCallback: OnItemClickCallback? = null
@@ -22,7 +22,8 @@ class UsersAdapter: RecyclerView.Adapter<UsersAdapter.ListViewHolder>() {
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ListViewHolder {
-        val mView = LayoutInflater.from(viewGroup.context).inflate(R.layout.item_row_user, viewGroup, false)
+        val mView =
+            LayoutInflater.from(viewGroup.context).inflate(R.layout.item_row_user, viewGroup, false)
         return ListViewHolder(mView)
     }
 

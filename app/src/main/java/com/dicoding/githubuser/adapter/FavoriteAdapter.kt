@@ -1,6 +1,5 @@
 package com.dicoding.githubuser.adapter
 
-import android.app.Activity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,12 +9,11 @@ import com.dicoding.githubuser.R
 import com.dicoding.githubuser.databinding.ItemRowUserBinding
 import com.dicoding.githubuser.model.User
 
-class FavoriteAdapter(private val activity: Activity) :
-    RecyclerView.Adapter<FavoriteAdapter.FavoriteViewHolder>() {
+class FavoriteAdapter : RecyclerView.Adapter<FavoriteAdapter.FavoriteViewHolder>() {
 
     private var onItemClickCallback: OnItemClickCallback? = null
 
-    private var listFavorites = ArrayList<User>()
+    var listFavorites = ArrayList<User>()
         set(listFavorites) {
             if (listFavorites.size > 0) {
                 this.listFavorites.clear()
@@ -25,7 +23,8 @@ class FavoriteAdapter(private val activity: Activity) :
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoriteViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_row_user, parent, false)
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.item_row_user, parent, false)
         return FavoriteViewHolder(view)
     }
 
@@ -49,6 +48,10 @@ class FavoriteAdapter(private val activity: Activity) :
         this.listFavorites.removeAt(position)
         notifyItemRemoved(position)
         notifyItemRangeChanged(position, this.listFavorites.size)
+    }
+
+    fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
+        this.onItemClickCallback = onItemClickCallback
     }
 
     inner class FavoriteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

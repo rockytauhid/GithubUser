@@ -12,7 +12,8 @@ import com.dicoding.githubuser.activity.ReposFragment
 import com.dicoding.githubuser.model.Companion
 
 
-class SectionsPagerAdapter(private val mContext: Context, fm: FragmentManager) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+class SectionsPagerAdapter(private val mContext: Context, fm: FragmentManager) :
+    FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     @StringRes
     private val TABS = intArrayOf(

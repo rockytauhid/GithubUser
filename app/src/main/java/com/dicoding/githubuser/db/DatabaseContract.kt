@@ -14,6 +14,7 @@ internal class DatabaseContract {
             const val FOLLOWERS_URL = "followers_url"
             const val FOLLOWING_URL = "following_url"
             const val REPOS_URL = "repos_url"
+            const val DATE_ADDED = "date_added"
         }
     }
 }

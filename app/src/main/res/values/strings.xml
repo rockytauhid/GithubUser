@@ -23,4 +23,11 @@
     <string name="text_favorite">Favorite</string>
     <string name="placeholder_favorite">You don\'t have any favorite</string>
     <string name="remove_all">Remove all</string>
+    <string name="confirm_remove_all">Are you sure you want to remove all from favorite?</string>
+    <string name="text_yes">Yes</string>
+    <string name="text_no">No</string>
+    <string name="failed_favorite">Failed to mark as favorite</string>
+    <string name="success_favorite">Successfully marked as favorite</string>
+    <string name="success_remove">Successfully removed from favorite</string>
+    <string name="failed_remove">Failed to remove from favorite</string>
 </resources>

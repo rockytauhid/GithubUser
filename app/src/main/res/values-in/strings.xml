@@ -16,4 +16,11 @@
     <string name="text_favorite">Favorit</string>
     <string name="placeholder_favorite">Anda tidak punya favorit</string>
     <string name="remove_all">Hapus semua</string>
+    <string name="confirm_remove_all">Apakah kamu yakin ingin menghapus semua dari favorit?</string>
+    <string name="text_yes">Ya</string>
+    <string name="text_no">Tidak</string>
+    <string name="failed_favorite">Gagal ditandai sebagai favorit</string>
+    <string name="success_favorite">Sukses ditandai sebagai favorit</string>
+    <string name="success_remove">Sukses dihapus dari favorit</string>
+    <string name="failed_remove">Gagal dihapus dari favorit</string>
 </resources>

@@ -8,7 +8,7 @@ import com.dicoding.githubuser.R
 import com.dicoding.githubuser.databinding.ItemRowReposBinding
 import com.dicoding.githubuser.model.Repo
 
-class ReposAdapter: RecyclerView.Adapter<ReposAdapter.ListViewHolder>() {
+class ReposAdapter : RecyclerView.Adapter<ReposAdapter.ListViewHolder>() {
 
     private val mData = ArrayList<Repo>()
     private var onItemClickCallback: OnItemClickCallback? = null
@@ -20,7 +20,8 @@ class ReposAdapter: RecyclerView.Adapter<ReposAdapter.ListViewHolder>() {
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ListViewHolder {
-        val mView = LayoutInflater.from(viewGroup.context).inflate(R.layout.item_row_repos, viewGroup, false)
+        val mView = LayoutInflater.from(viewGroup.context)
+            .inflate(R.layout.item_row_repos, viewGroup, false)
         return ListViewHolder(mView)
     }
 

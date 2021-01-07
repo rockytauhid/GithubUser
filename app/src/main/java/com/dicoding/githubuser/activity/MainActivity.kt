@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.rvUsers.layoutManager = LinearLayoutManager(this)
         binding.rvUsers.adapter = adapter
-        binding.rvUsers.setHasFixedSize(true)
+        //binding.rvUsers.setHasFixedSize(true)
 
         showLoading(true)
         model = ViewModelProvider(

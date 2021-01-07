@@ -5,7 +5,7 @@
     android:id="@+id/item_row_user"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/general_padding">
+    android:padding="@dimen/general_padding_margin">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/img_avatar"

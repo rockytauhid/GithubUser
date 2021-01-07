@@ -5,6 +5,8 @@
     android:id="@+id/activity_favorite"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginLeft="@dimen/general_padding_margin"
+    android:layout_marginRight="@dimen/general_padding_margin"
     tools:context=".activity.FavoriteActivity">
 
     <ProgressBar
@@ -21,7 +23,7 @@
         android:id="@+id/tv_result"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/general_padding"
+        android:paddingTop="@dimen/general_padding_margin"
         style="@style/TextContent.Subtitle"
         app:layout_constraintBottom_toTopOf="@+id/rv_favorite"
         tools:text="@string/placeholder_favorite" />

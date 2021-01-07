@@ -2,7 +2,10 @@ package com.dicoding.githubuser.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,7 +26,7 @@ class FavoriteActivity : AppCompatActivity() {
         binding = ActivityFavoriteBinding.inflate(layoutInflater)
         setContentView(binding.root)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = "${getString(R.string.text_favorite)}"
+        supportActionBar?.title = getString(R.string.text_favorite)
 
         adapter = UsersAdapter()
         adapter.notifyDataSetChanged()
@@ -61,6 +64,19 @@ class FavoriteActivity : AppCompatActivity() {
                 startActivity(moveWithObjectIntent)
             }
         })
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.menu_favorite, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.action_remove_all) {
+            Toast.makeText(this, getString(R.string.remove_all), Toast.LENGTH_SHORT).show()
+        }
+        return true
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

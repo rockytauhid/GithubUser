@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.rvUsers.layoutManager = LinearLayoutManager(this)
         binding.rvUsers.adapter = adapter
-        //binding.rvUsers.setHasFixedSize(true)
+        binding.rvUsers.setHasFixedSize(true)
 
         showLoading(true)
         model = ViewModelProvider(
@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
-        inflater.inflate(R.menu.option_menu, menu)
+        inflater.inflate(R.menu.menu_main, menu)
 
         val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
         val searchView = menu.findItem(R.id.action_search).actionView as SearchView

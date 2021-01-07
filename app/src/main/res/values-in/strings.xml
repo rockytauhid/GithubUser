@@ -15,4 +15,5 @@
     <string name="share_using">Bagikan menggunakan</string>
     <string name="text_favorite">Favorit</string>
     <string name="placeholder_favorite">Anda tidak punya favorit</string>
+    <string name="remove_all">Hapus semua</string>
 </resources>

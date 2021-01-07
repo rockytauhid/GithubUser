@@ -15,4 +15,5 @@
     <string name="share_using">Partager en utilisant</string>
     <string name="text_favorite">Favori</string>
     <string name="placeholder_favorite">Tu n\'as pas de favori</string>
+    <string name="remove_all">Enlever tout</string>
 </resources>

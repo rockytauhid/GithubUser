@@ -22,4 +22,5 @@
     <string name="share_using">Share using</string>
     <string name="text_favorite">Favorite</string>
     <string name="placeholder_favorite">You don\'t have any favorite</string>
+    <string name="remove_all">Remove all</string>
 </resources>

@@ -16,7 +16,7 @@
         android:id="@+id/tv_follow"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/general_padding"
+        android:layout_margin="@dimen/general_padding_margin"
         style="@style/TextContent.Subtitle"
         tools:text="@string/text_followers"/>
 

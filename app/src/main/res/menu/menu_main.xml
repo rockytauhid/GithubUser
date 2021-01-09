@@ -4,16 +4,17 @@
     <item
         android:id="@+id/action_search"
         android:icon="@android:drawable/ic_menu_search"
-        android:title="@string/text_search"
+        android:title="@string/search"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="collapseActionView|ifRoom" />
     <item
         android:id="@+id/action_favorite"
         android:icon="@android:drawable/btn_star"
-        android:title="@string/text_favorite"
+        android:title="@string/favorite"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/action_language_settings"
-        android:title="@string/language_settings"
-        app:showAsAction="never"/>
+        android:id="@+id/action_settings"
+        android:icon="@android:drawable/ic_menu_preferences"
+        android:title="@string/settings"
+        app:showAsAction="ifRoom"/>
 </menu>

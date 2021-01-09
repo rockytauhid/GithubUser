@@ -1,27 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name" translatable="false">Github User</string>
-    <string name="placeholder_result" translatable="false">Top 20 users</string>
-    <string name="placeholder_name" translatable="false">Homer Simpsons</string>
-    <string name="placeholder_login" translatable="false">hsimpsons</string>
-    <string name="placeholder_company" translatable="false">Nuclear Power Plant</string>
-    <string name="placeholder_location" translatable="false">Springfield</string>
-    <string name="text_github_logo">Github Logo</string>
+    <string name="github_logo">Github Logo</string>
     <string name="user_photo">User photo</string>
-    <string name="text_followers">Followers</string>
-    <string name="text_following">Following</string>
-    <string name="text_repositories">Repositories</string>
-    <string name="text_top" translatable="false">Top 30</string>
-    <string name="text_found">Found</string>
-    <string name="text_users">users</string>
-    <string name="text_search">Search</string>
+    <string name="followers">Followers</string>
+    <string name="following">Following</string>
+    <string name="repositories">Repositories</string>
+    <string name="top_30" translatable="false">Top 30</string>
+    <string name="found">Found</string>
+    <string name="users">users</string>
+    <string name="search">Search</string>
     <string name="search_hint">Enter username</string>
     <string name="action_share">Share</string>
-    <string name="language_settings">Language Settings</string>
     <string name="mark_as_favourite">Mark as favourite</string>
     <string name="remove_from_favorite">Remove from favorite</string>
     <string name="share_using">Share using</string>
-    <string name="text_favorite">Favorite</string>
+    <string name="favorite">Favorite</string>
     <string name="no_favorite">You don\'t have any favorite</string>
     <string name="remove_all">Remove all</string>
     <string name="confirm_remove_all">Are you sure you want to remove all from favorite?</string>
@@ -31,4 +25,21 @@
     <string name="success_favorite">Successfully marked as favorite</string>
     <string name="success_remove">Successfully removed from favorite</string>
     <string name="failed_remove">Failed to remove from favorite</string>
+
+    <string name="settings">Settings</string>
+    <!-- Preference Titles -->
+    <string name="notification_header">Notifications</string>
+    <string name="language_header">Language</string>
+
+    <!-- Change Language Preferences -->
+    <string name="change_language_title">Select Language</string>
+    <string name="key_change_language" translatable="false">key_change_language</string>
+    <string name="change_language_summary">Tap to change the language</string>
+
+    <!-- Daily Reminder Preferences -->
+    <string name="daily_reminder_title">Daily Reminder</string>
+    <string name="key_daily_reminder" translatable="false">key_daily_reminder</string>
+    <string name="daily_reminder_summary_on">Tap to turn OFF daily reminder
+    </string>
+    <string name="daily_reminder_summary_off">Tap to turn ON daily reminder</string>
 </resources>

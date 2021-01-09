@@ -7,9 +7,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.dicoding.githubuser.R
-import com.dicoding.githubuser.activity.FollowFragment
-import com.dicoding.githubuser.activity.ReposFragment
-import com.dicoding.githubuser.model.Companion
+import com.dicoding.githubuser.fragment.FollowFragment
+import com.dicoding.githubuser.fragment.ReposFragment
+import com.dicoding.githubuser.helper.Companion
 
 
 class SectionsPagerAdapter(private val mContext: Context, fm: FragmentManager) :
@@ -17,9 +17,9 @@ class SectionsPagerAdapter(private val mContext: Context, fm: FragmentManager) :
 
     @StringRes
     private val TABS = intArrayOf(
-        R.string.text_followers,
-        R.string.text_following,
-        R.string.text_repositories
+        R.string.followers,
+        R.string.following,
+        R.string.repositories
     )
 
     override fun getItem(position: Int): Fragment {

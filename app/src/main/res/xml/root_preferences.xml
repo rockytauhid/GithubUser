@@ -1,0 +1,23 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="@string/notification_header">
+
+        <SwitchPreference
+            app:defaultValue="false"
+            app:key="@string/key_daily_reminder"
+            app:summaryOff="@string/daily_reminder_summary_off"
+            app:summaryOn="@string/daily_reminder_summary_on"
+            app:title="@string/daily_reminder_title" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/language_header">
+
+        <Preference
+            app:key="@string/key_change_language"
+            app:summary="@string/change_language_summary"
+            app:title="@string/change_language_title" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="text_github_logo">Logo Github</string>
+    <string name="github_logo">Logo Github</string>
     <string name="user_photo">foto pengguna</string>
-    <string name="text_followers">Pengikut</string>
-    <string name="text_following">Mengikuti</string>
-    <string name="text_repositories">Repositori</string>
-    <string name="text_found">Ditemukan</string>
-    <string name="text_users">pengguna</string>
-    <string name="text_search">Pencarian</string>
+    <string name="followers">Pengikut</string>
+    <string name="following">Mengikuti</string>
+    <string name="repositories">Repositori</string>
+    <string name="found">Ditemukan</string>
+    <string name="users">pengguna</string>
+    <string name="search">Pencarian</string>
     <string name="search_hint">Masukkan pengguna</string>
     <string name="action_share">Bagikan</string>
-    <string name="language_settings">Pengaturan bahasa</string>
     <string name="mark_as_favourite">Tandai sebagai favorit</string>
     <string name="remove_from_favorite">Hapus dari favorit</string>
     <string name="share_using">Bagikan menggunakan</string>
-    <string name="text_favorite">Favorit</string>
+    <string name="favorite">Favorit</string>
     <string name="no_favorite">Anda tidak punya favorit</string>
     <string name="remove_all">Hapus semua</string>
     <string name="confirm_remove_all">Apakah kamu yakin ingin menghapus semua dari favorit?</string>
@@ -24,4 +23,18 @@
     <string name="success_favorite">Sukses ditandai sebagai favorit</string>
     <string name="success_remove">Sukses dihapus dari favorit</string>
     <string name="failed_remove">Gagal dihapus dari favorit</string>
+
+    <string name="settings">Pengaturan</string>
+    <!-- Preference Titles -->
+    <string name="notification_header">Notifikasi</string>
+    <string name="language_header">Bahasa</string>
+
+    <!-- Change Language Preferences -->
+    <string name="change_language_title">Pilih Bahasa</string>
+    <string name="change_language_summary">Ketuk untuk mengubah bahasa</string>
+
+    <!-- Daily Reminder Preferences -->
+    <string name="daily_reminder_title">Pengingat Harian</string>
+    <string name="daily_reminder_summary_on">Ketuk untuk menonaktifkan pengingat harian</string>
+    <string name="daily_reminder_summary_off">Ketuk untuk mengaktifkan pengingat harian</string>
 </resources>

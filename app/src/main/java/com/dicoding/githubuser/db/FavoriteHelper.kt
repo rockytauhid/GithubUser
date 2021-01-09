@@ -114,12 +114,12 @@ class FavoriteHelper(context: Context) {
         return result
     }
 
-    fun isLoginExist(login: String): Boolean {
+    fun isLoginExist(id: String): Boolean {
         val cursor = database.query(
             DATABASE_TABLE,
             null,
-            "$LOGIN = ?",
-            arrayOf(login),
+            "$_ID = ?",
+            arrayOf(id),
             null,
             null,
             null,

@@ -12,6 +12,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         style="@style/TextList"
-        tools:text="@string/text_repositories" />
+        tools:text="@string/repositories" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
-import com.dicoding.githubuser.model.Companion
+import com.dicoding.githubuser.helper.Companion
 import com.dicoding.githubuser.R
 
 

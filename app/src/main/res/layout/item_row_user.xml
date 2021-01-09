@@ -24,6 +24,6 @@
         app:layout_constraintStart_toEndOf="@id/img_avatar"
         app:layout_constraintTop_toTopOf="parent"
         style="@style/TextList"
-        tools:text="@string/placeholder_login" />
+        tools:text="@string/app_name" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,7 +4,6 @@ import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.provider.Settings
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -15,10 +14,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.githubuser.R
 import com.dicoding.githubuser.adapter.UsersAdapter
 import com.dicoding.githubuser.databinding.ActivityMainBinding
-import com.dicoding.githubuser.model.Companion
+import com.dicoding.githubuser.helper.Companion
 import com.dicoding.githubuser.model.User
 import com.dicoding.githubuser.viewmodel.MainViewModel
-import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : AppCompatActivity() {
     private lateinit var adapter: UsersAdapter
@@ -36,7 +34,6 @@ class MainActivity : AppCompatActivity() {
 
         binding.rvUsers.layoutManager = LinearLayoutManager(this)
         binding.rvUsers.adapter = adapter
-        //binding.rvUsers.setHasFixedSize(true)
 
         showLoading(true)
         model = ViewModelProvider(
@@ -47,7 +44,7 @@ class MainActivity : AppCompatActivity() {
         if (model.getListUsers().value == null) {
             model.setListUsers()
             binding.tvResult.text =
-                StringBuilder("${getString(R.string.text_top)} ${getString(R.string.text_users)}")
+                StringBuilder("${getString(R.string.top_30)} ${getString(R.string.users)}")
         }
         if (savedInstanceState != null) {
             searchQuery = savedInstanceState.getString(Companion.STATE_QUERY)
@@ -92,9 +89,9 @@ class MainActivity : AppCompatActivity() {
                 model.getTotalCount().observe(this@MainActivity, { data ->
                     if (data != null) {
                         binding.tvResult.text =
-                            StringBuilder("${getString(R.string.text_found)} $data ${getString(R.string.text_users)}")
+                            StringBuilder("${getString(R.string.found)} $data ${getString(R.string.users)}")
                         if (data > 30)
-                            binding.tvResult.append(" (${getString(R.string.text_top)})")
+                            binding.tvResult.append(" (${getString(R.string.top_30)})")
                     }
                 })
                 return true
@@ -106,7 +103,7 @@ class MainActivity : AppCompatActivity() {
                     showLoading(true)
                     model.setListUsers()
                     binding.tvResult.text =
-                        StringBuilder("${getString(R.string.text_top)} ${getString(R.string.text_users)}")
+                        StringBuilder("${getString(R.string.top_30)} ${getString(R.string.users)}")
                 }
                 return true
             }
@@ -118,8 +115,8 @@ class MainActivity : AppCompatActivity() {
         if (item.itemId == R.id.action_favorite) {
             val mIntent = Intent(this@MainActivity, FavoriteActivity::class.java)
             startActivity(mIntent)
-        } else if (item.itemId == R.id.action_language_settings) {
-            val mIntent = Intent(Settings.ACTION_LOCALE_SETTINGS)
+        } else if (item.itemId == R.id.action_settings) {
+            val mIntent = Intent(this@MainActivity, SettingActivity::class.java)
             startActivity(mIntent)
         }
         return super.onOptionsItemSelected(item)
@@ -129,10 +126,6 @@ class MainActivity : AppCompatActivity() {
         super.onSaveInstanceState(outState)
         outState.putString(Companion.STATE_QUERY, searchQuery)
         outState.putString(Companion.STATE_RESULT, binding.tvResult.text.toString())
-    }
-
-    private fun showSnackbarMessage(message: String) {
-        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
     }
 
     private fun showLoading(state: Boolean) {

@@ -1,4 +1,4 @@
-package com.dicoding.githubuser.activity
+package com.dicoding.githubuser.fragment
 
 import android.content.Intent
 import android.net.Uri
@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.githubuser.R
 import com.dicoding.githubuser.adapter.ReposAdapter
 import com.dicoding.githubuser.databinding.FragmentReposBinding
-import com.dicoding.githubuser.model.Companion
+import com.dicoding.githubuser.helper.Companion
 import com.dicoding.githubuser.model.User
 import com.dicoding.githubuser.viewmodel.DetailViewModel
 
@@ -51,9 +51,9 @@ class ReposFragment : Fragment() {
         )
         model.getPublicRepos().observe(viewLifecycleOwner, { data ->
             if (data != null) {
-                binding.tvRepos.text = StringBuilder("$data ${getString(R.string.text_repositories)}")
+                binding.tvRepos.text = StringBuilder("$data ${getString(R.string.repositories)}")
                 if (data > 30)
-                    binding.tvRepos.append(" (${getString(R.string.text_top)})")
+                    binding.tvRepos.append(" (${getString(R.string.top_30)})")
             }
         })
         model.setListRepos(reposUrl)

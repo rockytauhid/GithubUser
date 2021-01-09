@@ -24,7 +24,7 @@
         android:paddingTop="@dimen/general_padding_margin"
         style="@style/TextContent.Subtitle"
         app:layout_constraintBottom_toTopOf="@+id/rv_users"
-        tools:text="@string/placeholder_result" />
+        tools:text="@string/top_30" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_users"

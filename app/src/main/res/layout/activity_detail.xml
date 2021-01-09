@@ -55,6 +55,10 @@
         android:contentDescription="@string/mark_as_favourite"
         app:layout_anchor="@id/app_bar"
         app:layout_anchorGravity="bottom|end"
-        app:srcCompat="@android:drawable/btn_minus" />
+        app:backgroundTint="@android:color/darker_gray"
+        app:rippleColor="@android:color/holo_orange_light"
+        app:borderWidth="0dp"
+        app:fabSize="mini"
+        app:srcCompat="@android:drawable/btn_star" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

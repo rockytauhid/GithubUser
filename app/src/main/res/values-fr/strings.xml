@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="text_github_logo">Logo de Github</string>
+    <string name="github_logo">Logo de Github</string>
     <string name="user_photo">Photo de l\'utilisateur</string>
-    <string name="text_followers">Suiveurs</string>
-    <string name="text_following">Suivant</string>
-    <string name="text_repositories">Dépôt</string>
-    <string name="text_found">A trouvé</string>
-    <string name="text_users">Utilisateurs</string>
-    <string name="text_search">Chercher</string>
+    <string name="followers">Suiveurs</string>
+    <string name="following">Suivant</string>
+    <string name="repositories">Dépôt</string>
+    <string name="found">A trouvé</string>
+    <string name="users">Utilisateurs</string>
+    <string name="search">Chercher</string>
     <string name="search_hint">Saisissez votre nom</string>
     <string name="action_share">Partager</string>
-    <string name="language_settings">Paramètres de langue</string>
     <string name="mark_as_favourite">Ajouter aux Favoris</string>
     <string name="remove_from_favorite">Supprimer des favoris</string>
     <string name="share_using">Partager en utilisant</string>
-    <string name="text_favorite">Favoris</string>
+    <string name="favorite">Favoris</string>
     <string name="no_favorite">Vous n\'avez pas de favoris</string>
     <string name="remove_all">Enlever tout</string>
     <string name="confirm_remove_all">Etes vous surs de vouloir enlever tous les favoris?</string>
@@ -24,4 +23,18 @@
     <string name="success_favorite">Ajouté avec succès en tant que favori</string>
     <string name="success_remove">Suppression réussie des favoris</string>
     <string name="failed_remove">Problème de suppression de favoris</string>
+
+    <string name="settings">Réglages</string>
+    <!-- Preference Titles -->
+    <string name="notification_header">Notifications</string>
+    <string name="language_header">Langue</string>
+
+    <!-- Change Language Preferences -->
+    <string name="change_language_title">Choisir la langue</string>
+    <string name="change_language_summary">Appuyez pour changer la langue</string>
+
+    <!-- Daily Reminder Preferences -->
+    <string name="daily_reminder_title">Rappel quotidien</string>
+    <string name="daily_reminder_summary_on">Appuyez pour désactiver le rappel quotidien</string>
+    <string name="daily_reminder_summary_off">Appuyez pour activer le rappel quotidien</string>
 </resources>

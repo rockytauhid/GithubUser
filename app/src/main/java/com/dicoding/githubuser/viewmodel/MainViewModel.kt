@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.dicoding.githubuser.helper.MappingHelper
-import com.dicoding.githubuser.model.Companion
+import com.dicoding.githubuser.helper.Companion
 import com.dicoding.githubuser.model.User
 import com.loopj.android.http.AsyncHttpResponseHandler
 import cz.msebera.android.httpclient.Header

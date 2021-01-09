@@ -1,8 +1,8 @@
 package com.dicoding.githubuser.activity
 
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -16,15 +16,11 @@ import com.dicoding.githubuser.adapter.FavoriteAdapter
 import com.dicoding.githubuser.adapter.SectionsPagerAdapter
 import com.dicoding.githubuser.databinding.ActivityDetailBinding
 import com.dicoding.githubuser.db.FavoriteHelper
-import com.dicoding.githubuser.helper.MappingHelper
-import com.dicoding.githubuser.model.Companion
+import com.dicoding.githubuser.helper.Companion
 import com.dicoding.githubuser.model.User
 import com.dicoding.githubuser.viewmodel.DetailViewModel
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
 
 
 class DetailActivity : AppCompatActivity() {
@@ -45,7 +41,6 @@ class DetailActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val user = intent.getParcelableExtra<User>(Companion.EXTRA_USER) as User
-        val positon = intent.getIntExtra(Companion.EXTRA_POSITION, -1)
 
         Glide.with(this).load(user.avatarUrl)
             .apply(RequestOptions()).into(binding.imgItemAvatar)
@@ -54,7 +49,7 @@ class DetailActivity : AppCompatActivity() {
 
         favoriteHelper = FavoriteHelper.getInstance(applicationContext)
         favoriteHelper.open()
-        favoriteStatus = favoriteHelper.isLoginExist(user.login.toString())
+        favoriteStatus = favoriteHelper.isLoginExist(user.id.toString())
         setFavoriteStatus(favoriteStatus)
 
         showLoading(true)
@@ -83,33 +78,26 @@ class DetailActivity : AppCompatActivity() {
         supportActionBar?.elevation = 0f
 
         favoriteAdapter = FavoriteAdapter()
-        //favoriteAdapter.notifyDataSetChanged()
 
         binding.fab.setOnClickListener { view ->
             showLoading(false)
             if (favoriteStatus) {
-                Log.i("Test", "is favorite")
                 val result = favoriteHelper.deleteFavorite(user.id)
                 if (result > 0) {
                     setFavoriteStatus(!favoriteStatus)
-                    //favoriteAdapter.removeItem(positon)
                     showSnackbarMessage(getString(R.string.success_remove))
                 } else {
                     showSnackbarMessage(getString(R.string.failed_remove))
                 }
             } else {
-                Log.i("Test", "not favorite")
                 val result = favoriteHelper.insertFavorite(user)
                 if (result > 0) {
                     setFavoriteStatus(!favoriteStatus)
-                    //favoriteAdapter.addItem(user)
                     showSnackbarMessage(getString(R.string.success_favorite))
                 } else {
                     showSnackbarMessage(getString(R.string.failed_favorite))
                 }
             }
-            //favoriteAdapter.notifyDataSetChanged()
-            //loadFavoritesAsync()
         }
     }
 
@@ -136,44 +124,22 @@ class DetailActivity : AppCompatActivity() {
         return true
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        favoriteHelper.close()
-    }
-
-    private fun loadFavoritesAsync() {
-        GlobalScope.launch(Dispatchers.Main) {
-            showLoading(true)
-            val deferredFavorites = async(Dispatchers.IO) {
-                val cursor = favoriteHelper.queryAll()
-                MappingHelper.mapCursorToArrayList(cursor)
-            }
-            showLoading(false)
-            val listFavorites = deferredFavorites.await()
-            if (listFavorites.size > 0) {
-                favoriteAdapter.setData(listFavorites)
-            } else {
-                favoriteAdapter.removeAllItems()
-                showSnackbarMessage(getString(R.string.no_favorite))
-            }
-        }
-    }
-
     private fun setFavoriteStatus(status: Boolean) {
         favoriteStatus = status
         if (favoriteStatus) {
-            Log.i("Test", "added to favorite")
             binding.fab.contentDescription = getString(R.string.remove_from_favorite)
-            binding.fab.setImageDrawable(
-                ContextCompat.getDrawable(
-                    applicationContext,
-                    android.R.drawable.btn_star
-                )
-            )
+            //binding.fab.setImageResource(android.R.drawable.btn_star_big_on)
+            binding.fab.backgroundTintList =
+                ColorStateList.valueOf(ContextCompat.getColor(this, android.R.color.holo_orange_light))
+            binding.fab.rippleColor = ContextCompat.getColor(this, android.R.color.darker_gray)
+            binding.fab.size = FloatingActionButton.SIZE_NORMAL
         } else {
-            Log.i("Test", "deleted from favorite")
             binding.fab.contentDescription = getString(R.string.mark_as_favourite)
-            binding.fab.setImageResource(android.R.drawable.btn_default)
+            //binding.fab.setImageResource(android.R.drawable.btn_star_big_off)
+            binding.fab.backgroundTintList =
+                ColorStateList.valueOf(ContextCompat.getColor(this, android.R.color.darker_gray))
+            binding.fab.rippleColor = ContextCompat.getColor(this, android.R.color.holo_orange_light)
+            binding.fab.size = FloatingActionButton.SIZE_MINI
         }
     }
 

@@ -11,13 +11,14 @@
 
     <ProgressBar
         android:id="@+id/progressBarFavorite"
-        style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        style="?android:attr/progressBarStyle" />
 
     <TextView
         android:id="@+id/tv_result"
@@ -26,7 +27,7 @@
         android:paddingTop="@dimen/general_padding_margin"
         style="@style/TextContent.Subtitle"
         app:layout_constraintBottom_toTopOf="@+id/rv_favorite"
-        tools:text="@string/placeholder_favorite" />
+        tools:text="@string/no_favorite" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_favorite"

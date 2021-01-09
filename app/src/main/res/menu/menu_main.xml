@@ -9,7 +9,7 @@
         app:showAsAction="collapseActionView|ifRoom" />
     <item
         android:id="@+id/action_favorite"
-        android:icon="@android:drawable/btn_star_big_on"
+        android:icon="@android:drawable/btn_star"
         android:title="@string/text_favorite"
         app:showAsAction="ifRoom" />
     <item

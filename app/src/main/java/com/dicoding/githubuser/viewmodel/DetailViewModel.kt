@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.dicoding.githubuser.helper.MappingHelper
 import com.dicoding.githubuser.model.Companion
 import com.dicoding.githubuser.model.Detail
 import com.dicoding.githubuser.model.Repo
@@ -94,21 +95,10 @@ class DetailViewModel: ViewModel() {
                 responseBody: ByteArray
             ) {
                 try {
-                    val listItems = ArrayList<User>()
                     val result = String(responseBody)
                     val jsonArray = JSONArray(result)
-                    for (i in 0 until jsonArray.length()) {
-                        val user = User()
-                        val jsonObject = jsonArray.getJSONObject(i)
-                        user.avatarUrl = jsonObject.getString("avatar_url")
-                        user.login = jsonObject.getString("login")
-                        user.url = jsonObject.getString("url")
-                        user.followersUrl = jsonObject.getString("followers_url")
-                        user.followingUrl = jsonObject.getString("following_url")
-                        user.reposUrl = jsonObject.getString("repos_url")
-                        listItems.add(user)
-                    }
-                    listFollowers.postValue(listItems)
+                    MappingHelper.mapJsonArrayToArrayList(jsonArray)
+                    listFollowers.postValue(MappingHelper.mapJsonArrayToArrayList(jsonArray))
                 } catch (e: Exception) {
                     Log.d("Exception", e.message.toString())
                 }
@@ -144,21 +134,9 @@ class DetailViewModel: ViewModel() {
                 responseBody: ByteArray
             ) {
                 try {
-                    val listItems = ArrayList<User>()
                     val result = String(responseBody)
                     val jsonArray = JSONArray(result)
-                    for (i in 0 until jsonArray.length()) {
-                        val user = User()
-                        val jsonObject = jsonArray.getJSONObject(i)
-                        user.avatarUrl = jsonObject.getString("avatar_url")
-                        user.login = jsonObject.getString("login")
-                        user.url = jsonObject.getString("url")
-                        user.followersUrl = jsonObject.getString("followers_url")
-                        user.followingUrl = jsonObject.getString("following_url")
-                        user.reposUrl = jsonObject.getString("repos_url")
-                        listItems.add(user)
-                    }
-                    listFollowing.postValue(listItems)
+                    listFollowing.postValue(MappingHelper.mapJsonArrayToArrayList(jsonArray))
                 } catch (e: Exception) {
                     Log.d("Exception", e.message.toString())
                 }

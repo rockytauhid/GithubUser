@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.dicoding.githubuser.helper.MappingHelper
 import com.dicoding.githubuser.model.Companion
 import com.dicoding.githubuser.model.User
 import com.loopj.android.http.AsyncHttpResponseHandler
@@ -35,19 +36,7 @@ class MainViewModel : ViewModel() {
                     } else {
                         JSONArray(result)
                     }
-                    val listItems = ArrayList<User>()
-                    for (i in 0 until jsonArray.length()) {
-                        val user = User()
-                        val jsonObject = jsonArray.getJSONObject(i)
-                        user.avatarUrl = jsonObject.getString("avatar_url")
-                        user.login = jsonObject.getString("login")
-                        user.url = jsonObject.getString("url")
-                        user.followersUrl = jsonObject.getString("followers_url")
-                        user.followingUrl = jsonObject.getString("following_url")
-                        user.reposUrl = jsonObject.getString("repos_url")
-                        listItems.add(user)
-                    }
-                    listUsers.postValue(listItems)
+                    listUsers.postValue(MappingHelper.mapJsonArrayToArrayList(jsonArray))
                 } catch (e: Exception) {
                     Log.d("Exception", e.message.toString())
                 }

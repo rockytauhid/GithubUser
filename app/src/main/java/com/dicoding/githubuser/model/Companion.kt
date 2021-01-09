@@ -13,6 +13,7 @@ class Companion {
         const val STATE_QUERY = "state_query"
         const val STATE_RESULT = "state_result"
         const val EXTRA_FAVORITES = "extra_favorites"
+        const val EXTRA_POSITION = "extra_position"
         const val REQUEST_ADD = 100
         const val RESULT_ADD = 101
         const val REQUEST_UPDATE = 200

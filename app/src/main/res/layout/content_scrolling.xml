@@ -15,8 +15,8 @@
         android:layout_height="match_parent">
 
         <ProgressBar
-            android:id="@+id/progressBarDetails"
             style="?android:attr/progressBarStyle"
+            android:id="@+id/progressBarDetails"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -26,8 +26,8 @@
             app:layout_constraintVertical_bias="0.025" />
 
         <TextView
-            android:id="@+id/tv_item_name"
             style="@style/TextContent.Big"
+            android:id="@+id/tv_item_name"
             android:layout_marginTop="@dimen/text_big_margin"
             android:layout_marginBottom="2dp"
             app:layout_constraintBottom_toTopOf="@+id/tv_item_company"
@@ -37,8 +37,8 @@
             tools:text="@string/placeholder_name" />
 
         <TextView
-            android:id="@+id/tv_item_company"
             style="@style/TextContent.Small"
+            android:id="@+id/tv_item_company"
             android:layout_marginBottom="@dimen/text_small_margin"
             app:layout_constraintBottom_toTopOf="@+id/tv_item_location"
             app:layout_constraintEnd_toEndOf="parent"
@@ -47,8 +47,8 @@
             tools:text="@string/placeholder_company" />
 
         <TextView
-            android:id="@+id/tv_item_location"
             style="@style/TextContent.Small"
+            android:id="@+id/tv_item_location"
             android:layout_marginBottom="@dimen/text_big_margin"
             app:layout_constraintBottom_toTopOf="@+id/tabs"
             app:layout_constraintEnd_toEndOf="parent"

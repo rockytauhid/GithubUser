@@ -18,6 +18,7 @@ import com.dicoding.githubuser.databinding.ActivityMainBinding
 import com.dicoding.githubuser.model.Companion
 import com.dicoding.githubuser.model.User
 import com.dicoding.githubuser.viewmodel.MainViewModel
+import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : AppCompatActivity() {
     private lateinit var adapter: UsersAdapter
@@ -128,6 +129,10 @@ class MainActivity : AppCompatActivity() {
         super.onSaveInstanceState(outState)
         outState.putString(Companion.STATE_QUERY, searchQuery)
         outState.putString(Companion.STATE_RESULT, binding.tvResult.text.toString())
+    }
+
+    private fun showSnackbarMessage(message: String) {
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
     }
 
     private fun showLoading(state: Boolean) {

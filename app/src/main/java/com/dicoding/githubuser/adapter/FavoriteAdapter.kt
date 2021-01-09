@@ -4,72 +4,80 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.dicoding.githubuser.R
 import com.dicoding.githubuser.databinding.ItemRowUserBinding
 import com.dicoding.githubuser.model.User
 
-class FavoriteAdapter : RecyclerView.Adapter<FavoriteAdapter.FavoriteViewHolder>() {
+class FavoriteAdapter : RecyclerView.Adapter<FavoriteAdapter.ListViewHolder>() {
 
+    private val mData = ArrayList<User>()
     private var onItemClickCallback: OnItemClickCallback? = null
 
-    var listFavorites = ArrayList<User>()
-        set(listFavorites) {
-            if (listFavorites.size > 0) {
-                this.listFavorites.clear()
-            }
-            this.listFavorites.addAll(listFavorites)
-            notifyDataSetChanged()
-        }
+    fun setData(items: ArrayList<User>) {
+        mData.clear()
+        mData.addAll(items)
+        notifyDataSetChanged()
+    }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoriteViewHolder {
+    fun getData(): ArrayList<User> {
+        return mData
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
         val view =
             LayoutInflater.from(parent.context).inflate(R.layout.item_row_user, parent, false)
-        return FavoriteViewHolder(view)
+        return ListViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: FavoriteViewHolder, position: Int) {
-        holder.bind(listFavorites[position])
+    override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
+        holder.bind(mData[position], position)
     }
 
-    override fun getItemCount(): Int = this.listFavorites.size
+    override fun getItemCount(): Int = mData.size
 
     fun addItem(favorite: User) {
-        this.listFavorites.add(favorite)
-        notifyItemInserted(this.listFavorites.size - 1)
+        mData.add(favorite)
+        notifyItemInserted(mData.size - 1)
     }
 
     fun updateItem(position: Int, favorite: User) {
-        this.listFavorites[position] = favorite
+        mData[position] = favorite
         notifyItemChanged(position, favorite)
     }
 
     fun removeItem(position: Int) {
-        this.listFavorites.removeAt(position)
+        mData.removeAt(position)
         notifyItemRemoved(position)
-        notifyItemRangeChanged(position, this.listFavorites.size)
+        notifyItemRangeChanged(position, mData.size)
+    }
+
+    fun removeAllItems() {
+        mData.clear()
+        notifyDataSetChanged()
     }
 
     fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
         this.onItemClickCallback = onItemClickCallback
     }
 
-    inner class FavoriteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val binding = ItemRowUserBinding.bind(itemView)
-        fun bind(favorite: User) {
+        fun bind(user: User, position: Int) {
             with(binding) {
-                com.bumptech.glide.Glide.with(itemView.context)
-                    .load(favorite.avatarUrl)
+                Glide.with(itemView.context)
+                    .load(user.avatarUrl)
                     .apply(RequestOptions().override(55, 55))
                     .into(imgAvatar)
-                txtLogin.text = favorite.login
+                txtLogin.text = user.login
 
-                itemView.setOnClickListener { onItemClickCallback?.onItemClicked(favorite) }
+                itemView.setOnClickListener { onItemClickCallback?.onItemClicked(user, position) }
             }
         }
     }
 
     interface OnItemClickCallback {
-        fun onItemClicked(user: User)
+        fun onItemClicked(user: User, position: Int)
     }
 }

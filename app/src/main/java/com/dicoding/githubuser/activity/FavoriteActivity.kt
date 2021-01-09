@@ -12,10 +12,8 @@ import com.dicoding.githubuser.R
 import com.dicoding.githubuser.adapter.FavoriteAdapter
 import com.dicoding.githubuser.databinding.ActivityFavoriteBinding
 import com.dicoding.githubuser.db.FavoriteHelper
-import com.dicoding.githubuser.helper.MappingHelper
 import com.dicoding.githubuser.model.Companion
 import com.dicoding.githubuser.model.User
-import com.dicoding.githubuser.viewmodel.MainViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -25,8 +23,7 @@ import kotlinx.coroutines.launch
 class FavoriteActivity : AppCompatActivity() {
     private lateinit var adapter: FavoriteAdapter
     private lateinit var binding: ActivityFavoriteBinding
-    private lateinit var model: MainViewModel
-    private lateinit var favoriteHelper: FavoriteHelper
+    private lateinit var helper: FavoriteHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,28 +39,26 @@ class FavoriteActivity : AppCompatActivity() {
         binding.rvFavorite.layoutManager = LinearLayoutManager(this)
         binding.rvFavorite.adapter = adapter
 
-        favoriteHelper = FavoriteHelper.getInstance(applicationContext)
-        favoriteHelper.open()
+        helper = FavoriteHelper.getInstance(applicationContext)
+        helper.open()
 
-        loadNotesAsync()
-
-        if (savedInstanceState == null) {
-            // proses ambil data
-            loadNotesAsync()
-        } else {
+        //if (savedInstanceState == null) {
+            loadFavoritesAsync()
+/*        } else {
             val result = savedInstanceState.getString(Companion.STATE_RESULT)
             binding.tvResult.text = result
             val list = savedInstanceState.getParcelableArrayList<User>(Companion.EXTRA_FAVORITES)
             if (list != null) {
-                adapter.listFavorites = list
+                adapter.setData(list)
             }
-        }
+        }*/
 
         adapter.setOnItemClickCallback(object :
             FavoriteAdapter.OnItemClickCallback {
-            override fun onItemClicked(user: User) {
+            override fun onItemClicked(user: User, position: Int) {
                 val moveWithObjectIntent = Intent(this@FavoriteActivity, DetailActivity::class.java)
                 moveWithObjectIntent.putExtra(Companion.EXTRA_USER, user)
+                moveWithObjectIntent.putExtra(Companion.EXTRA_POSITION, position)
                 startActivity(moveWithObjectIntent)
             }
         })
@@ -77,27 +72,36 @@ class FavoriteActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.action_remove_all) {
-            val builder = AlertDialog.Builder(this)
-            builder.setMessage(getString(R.string.confirm_remove_all))
-                .setCancelable(false)
-                .setPositiveButton(getString(R.string.text_yes)) { dialog, id ->
-                    // Delete selected note from database
-
-                }
-                .setNegativeButton(getString(R.string.text_no)) { dialog, id ->
-                    // Dismiss the dialog
-                    dialog.dismiss()
-                }
-            val alert = builder.create()
-            alert.show()
+            if (adapter.getData().size > 0) {
+                val builder = AlertDialog.Builder(this)
+                builder.setMessage(getString(R.string.confirm_remove_all))
+                    .setCancelable(false)
+                    .setPositiveButton(getString(R.string.text_yes)) { dialog, id ->
+                        val result = helper.deleteAllFavorite()
+                        if (result > 0) {
+                            adapter.removeAllItems()
+                            binding.tvResult.text = getString(R.string.no_favorite)
+                            showSnackbarMessage(getString(R.string.success_remove))
+                        } else {
+                            showSnackbarMessage(getString(R.string.failed_remove))
+                        }
+                    }
+                    .setNegativeButton(getString(R.string.text_no)) { dialog, id ->
+                        dialog.dismiss()
+                    }
+                val alert = builder.create()
+                alert.show()
+            } else {
+                showSnackbarMessage(getString(R.string.no_favorite))
+            }
         }
-        return true
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString(Companion.STATE_RESULT, binding.tvResult.text.toString())
-        outState.putParcelableArrayList(Companion.EXTRA_FAVORITES, adapter.listFavorites)
+        outState.putParcelableArrayList(Companion.EXTRA_FAVORITES, adapter.getData())
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -105,23 +109,31 @@ class FavoriteActivity : AppCompatActivity() {
         return true
     }
 
-    private fun loadNotesAsync() {
+    override fun onResume() {
+        super.onResume()
+        loadFavoritesAsync()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        helper.close()
+    }
+
+    private fun loadFavoritesAsync() {
         GlobalScope.launch(Dispatchers.Main) {
             showLoading(true)
-            val deferredNotes = async(Dispatchers.IO) {
-                val cursor = favoriteHelper.queryAll()
-                MappingHelper.mapCursorToArrayList(cursor)
+            val deferredFavorites = async(Dispatchers.IO) {
+                helper.getAllFavorite()
             }
             showLoading(false)
-            val favorites = deferredNotes.await()
-            if (favorites.size > 0) {
-                adapter.listFavorites = favorites
+            val listFavorites = deferredFavorites.await()
+            if (listFavorites.size > 0) {
+                adapter.setData(listFavorites)
             } else {
-                adapter.listFavorites = ArrayList()
-                showSnackbarMessage(getString(R.string.placeholder_favorite))
+                adapter.removeAllItems()
+                showSnackbarMessage(getString(R.string.no_favorite))
             }
-            binding.tvResult.text =
-                StringBuilder("${getString(R.string.text_found)} $favorites.size ${getString(R.string.text_users)}")
+            binding.tvResult.text = StringBuilder("${getString(R.string.text_found)} ${listFavorites.size} ${getString(R.string.text_users)}").toString()
         }
     }
 

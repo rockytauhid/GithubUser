@@ -55,6 +55,6 @@
         android:contentDescription="@string/mark_as_favourite"
         app:layout_anchor="@id/app_bar"
         app:layout_anchorGravity="bottom|end"
-        app:srcCompat="@android:drawable/btn_star_big_off" />
+        app:srcCompat="@android:drawable/btn_minus" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

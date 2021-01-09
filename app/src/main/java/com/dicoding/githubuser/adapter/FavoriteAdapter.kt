@@ -37,22 +37,6 @@ class FavoriteAdapter : RecyclerView.Adapter<FavoriteAdapter.ListViewHolder>() {
 
     override fun getItemCount(): Int = mData.size
 
-    fun addItem(favorite: User) {
-        mData.add(favorite)
-        notifyItemInserted(mData.size - 1)
-    }
-
-    fun updateItem(position: Int, favorite: User) {
-        mData[position] = favorite
-        notifyItemChanged(position, favorite)
-    }
-
-    fun removeItem(position: Int) {
-        mData.removeAt(position)
-        notifyItemRemoved(position)
-        notifyItemRangeChanged(position, mData.size)
-    }
-
     fun removeAllItems() {
         mData.clear()
         notifyDataSetChanged()

@@ -10,19 +10,23 @@
     <string name="search">Chercher</string>
     <string name="search_hint">Saisissez votre nom</string>
     <string name="action_share">Partager</string>
-    <string name="mark_as_favourite">Ajouter aux Favoris</string>
-    <string name="remove_from_favorite">Supprimer des favoris</string>
+
     <string name="share_using">Partager en utilisant</string>
-    <string name="favorite">Favoris</string>
-    <string name="no_favorite">Vous n\'avez pas de favoris</string>
     <string name="remove_all">Enlever tout</string>
-    <string name="confirm_remove_all">Etes vous surs de vouloir enlever tous les favoris?</string>
     <string name="text_yes">Oui</string>
     <string name="text_no">Non</string>
+
+    <!-- Favorite -->
+    <string name="mark_as_favourite">Ajouter aux Favoris</string>
+    <string name="remove_from_favorite">Supprimer des favoris</string>
+    <string name="favorite">Favoris</string>
+    <string name="no_favorite">Vous n\'avez pas de favoris</string>
+    <string name="confirm_remove_all">Etes vous surs de vouloir enlever tous les favoris?</string>
     <string name="failed_favorite">Problème lors de l\'ajout aux favoris</string>
     <string name="success_favorite">Ajouté avec succès en tant que favori</string>
     <string name="success_remove">Suppression réussie des favoris</string>
     <string name="failed_remove">Problème de suppression de favoris</string>
+    <string name="success_remove_all">Tous les favoris ont été supprimés</string>
 
     <string name="settings">Réglages</string>
     <!-- Preference Titles -->

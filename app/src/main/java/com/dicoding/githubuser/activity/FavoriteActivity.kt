@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.githubuser.R
@@ -69,9 +70,8 @@ class FavoriteActivity : AppCompatActivity() {
                     .setPositiveButton(getString(R.string.text_yes)) { dialog, id ->
                         val result = helper.deleteAllFavorite()
                         if (result > 0) {
-                            adapter.removeAllItems()
-                            binding.tvResult.text = getString(R.string.no_favorite)
-                            showSnackbarMessage(getString(R.string.success_remove))
+                            Toast.makeText(this, getString(R.string.success_remove_all), Toast.LENGTH_LONG).show()
+                            onBackPressed()
                         } else {
                             showSnackbarMessage(getString(R.string.failed_remove))
                         }
@@ -95,7 +95,13 @@ class FavoriteActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
+        val message = intent.getStringExtra(Companion.ALARM_EXTRA_MESSAGE)
+        if(!message.isNullOrEmpty()) {
+            val intent = Intent(this@FavoriteActivity, MainActivity::class.java)
+            startActivity(intent)
+        } else {
+            onBackPressed()
+        }
         return true
     }
 

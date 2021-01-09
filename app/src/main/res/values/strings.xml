@@ -12,19 +12,22 @@
     <string name="search">Search</string>
     <string name="search_hint">Enter username</string>
     <string name="action_share">Share</string>
-    <string name="mark_as_favourite">Mark as favourite</string>
-    <string name="remove_from_favorite">Remove from favorite</string>
     <string name="share_using">Share using</string>
-    <string name="favorite">Favorite</string>
-    <string name="no_favorite">You don\'t have any favorite</string>
     <string name="remove_all">Remove all</string>
-    <string name="confirm_remove_all">Are you sure you want to remove all from favorite?</string>
     <string name="text_yes">Yes</string>
     <string name="text_no">No</string>
+
+    <!-- Favorite -->
+    <string name="mark_as_favourite">Mark as favourite</string>
+    <string name="remove_from_favorite">Remove from favorite</string>
+    <string name="favorite">Favorite</string>
+    <string name="no_favorite">You don\'t have any favorite</string>
+    <string name="confirm_remove_all">Are you sure you want to remove all favorites?</string>
     <string name="failed_favorite">Failed to mark as favorite</string>
     <string name="success_favorite">Successfully marked as favorite</string>
     <string name="success_remove">Successfully removed from favorite</string>
     <string name="failed_remove">Failed to remove from favorite</string>
+    <string name="success_remove_all">Successfully remove all favorites</string>
 
     <string name="settings">Settings</string>
     <!-- Preference Titles -->

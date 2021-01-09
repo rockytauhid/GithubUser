@@ -60,10 +60,6 @@ class SettingsFragment : PreferenceFragmentCompat(),
         return true
     }
 
-    fun setDailyAlarm() {
-        dailyReminderPreference.isChecked = !dailyReminderPreference.isChecked
-    }
-
     private fun init() {
         DAILYREMINDER = getString(R.string.key_daily_reminder)
         dailyReminderPreference = findPreference<SwitchPreference>(DAILYREMINDER) as SwitchPreference

@@ -33,7 +33,7 @@ class FavoriteHelper(context: Context) {
             database.close()
     }
 
-    fun queryAll(): Cursor {
+    private fun queryAll(): Cursor {
         return database.query(
             DATABASE_TABLE,
             null,
@@ -44,31 +44,15 @@ class FavoriteHelper(context: Context) {
             "$_ID ASC")
     }
 
-    fun queryById(id: String): Cursor {
-        return database.query(
-            DATABASE_TABLE,
-            null,
-            "$_ID = ?",
-            arrayOf(id),
-            null,
-            null,
-            null,
-            null)
-    }
-
-    fun insert(values: ContentValues?): Long {
+    private fun insert(values: ContentValues?): Long {
         return database.insert(DATABASE_TABLE, null, values)
     }
 
-    fun update(id: String, values: ContentValues?): Int {
-        return database.update(DATABASE_TABLE, values, "$_ID = ?", arrayOf(id))
-    }
-
-    fun deleteById(id: String): Int {
+    private fun deleteById(id: String): Int {
         return database.delete(DATABASE_TABLE, "$_ID = '$id'", null)
     }
 
-    fun deleteAll(): Int {
+    private fun deleteAll(): Int {
         return database.delete(DATABASE_TABLE, null, null)
     }
 
@@ -92,26 +76,12 @@ class FavoriteHelper(context: Context) {
         return insert(args)
     }
 
-    fun updateFavorite(user: User): Int {
-        val args = ContentValues()
-        args.put(LOGIN, user.login)
-        args.put(AVATAR_URL, user.avatarUrl)
-        args.put(URL, user.url)
-        args.put(FOLLOWERS_URL, user.followersUrl)
-        args.put(FOLLOWING_URL, user.followingUrl)
-        args.put(REPOS_URL, user.reposUrl)
-        return update(user.id.toString(), args)
-    }
-
     fun deleteFavorite(id: Int): Long {
         return deleteById(id.toString()).toLong()
     }
 
     fun deleteAllFavorite(): Long {
-        val result = deleteAll().toLong()
-        if (result > 0)
-            database.delete("SQLITE_SEQUENCE","NAME = ?",arrayOf(DATABASE_TABLE)).toLong()
-        return result
+        return deleteAll().toLong()
     }
 
     fun isLoginExist(id: String): Boolean {

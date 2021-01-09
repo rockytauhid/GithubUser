@@ -61,10 +61,16 @@ class AlarmReceiver : BroadcastReceiver() {
         val notificationManagerCompat =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-        val intent = Intent(context, FavoriteActivity::class.java)
+
+        val intent = Intent(context, FavoriteActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
+        intent.putExtra(Companion.ALARM_EXTRA_MESSAGE, message)
         val pendingIntent = TaskStackBuilder.create(context)
-            .addNextIntentWithParentStack(intent)
+            .addParentStack(FavoriteActivity::class.java)
+            .addNextIntent(intent)
             .getPendingIntent(ID_REPEATING, PendingIntent.FLAG_UPDATE_CURRENT)
+
         val builder = NotificationCompat.Builder(context, channelId)
             .setSmallIcon(R.drawable.ic_access_time_black)
             .setContentTitle(title)
@@ -73,6 +79,7 @@ class AlarmReceiver : BroadcastReceiver() {
             .setVibrate(longArrayOf(1000, 1000, 1000, 1000, 1000))
             .setSound(alarmSound)
             .setContentIntent(pendingIntent)
+            .setAutoCancel(true)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 channelId,

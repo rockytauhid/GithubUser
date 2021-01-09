@@ -10,19 +10,22 @@
     <string name="search">Pencarian</string>
     <string name="search_hint">Masukkan pengguna</string>
     <string name="action_share">Bagikan</string>
-    <string name="mark_as_favourite">Tandai sebagai favorit</string>
-    <string name="remove_from_favorite">Hapus dari favorit</string>
     <string name="share_using">Bagikan menggunakan</string>
-    <string name="favorite">Favorit</string>
-    <string name="no_favorite">Anda tidak punya favorit</string>
     <string name="remove_all">Hapus semua</string>
-    <string name="confirm_remove_all">Apakah kamu yakin ingin menghapus semua dari favorit?</string>
     <string name="text_yes">Ya</string>
     <string name="text_no">Tidak</string>
+
+    <!-- Favorite -->
+    <string name="mark_as_favourite">Tandai sebagai favorit</string>
+    <string name="remove_from_favorite">Hapus dari favorit</string>
+    <string name="favorite">Favorit</string>
+    <string name="no_favorite">Anda tidak punya favorit</string>
+    <string name="confirm_remove_all">Apakah kamu yakin ingin menghapus semua dari favorit?</string>
     <string name="failed_favorite">Gagal dimasukkan sebagai favorit</string>
-    <string name="success_favorite">Sukses ditandai sebagai favorit</string>
-    <string name="success_remove">Sukses dihapus dari favorit</string>
+    <string name="success_favorite">Berhasil ditandai sebagai favorit</string>
+    <string name="success_remove">Berhasil dihapus dari favorit</string>
     <string name="failed_remove">Gagal dihapus dari favorit</string>
+    <string name="success_remove_all">Berhasil menghapus semua favorit</string>
 
     <string name="settings">Pengaturan</string>
     <!-- Preference Titles -->

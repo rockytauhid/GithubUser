@@ -23,10 +23,8 @@
     <string name="favorite">Favorite</string>
     <string name="no_favorite">You don\'t have any favorite</string>
     <string name="confirm_remove_all">Are you sure you want to remove all favorites?</string>
-    <string name="failed_favorite">Failed to mark as favorite</string>
     <string name="success_favorite">Successfully marked as favorite</string>
     <string name="success_remove">Successfully removed from favorite</string>
-    <string name="failed_remove">Failed to remove from favorite</string>
     <string name="success_remove_all">Successfully remove all favorites</string>
 
     <string name="settings">Settings</string>

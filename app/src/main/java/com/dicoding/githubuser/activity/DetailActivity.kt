@@ -1,8 +1,11 @@
 package com.dicoding.githubuser.activity
 
+import android.content.ContentValues
 import android.content.Intent
 import android.content.res.ColorStateList
+import android.net.Uri
 import android.os.Bundle
+import android.provider.BaseColumns
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -15,12 +18,19 @@ import com.dicoding.githubuser.R
 import com.dicoding.githubuser.adapter.FavoriteAdapter
 import com.dicoding.githubuser.adapter.SectionsPagerAdapter
 import com.dicoding.githubuser.databinding.ActivityDetailBinding
-import com.dicoding.githubuser.db.FavoriteHelper
+import com.dicoding.githubuser.db.FavoriteDBContract
+import com.dicoding.githubuser.db.FavoriteDBContract.FavoriteColumns.Companion.CONTENT_URI
+import com.dicoding.githubuser.db.FavoriteDBContract.FavoriteColumns.Companion.LOGIN
 import com.dicoding.githubuser.helper.Companion
+import com.dicoding.githubuser.helper.MappingHelper
 import com.dicoding.githubuser.model.User
 import com.dicoding.githubuser.viewmodel.DetailViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
 
 class DetailActivity : AppCompatActivity() {
@@ -28,7 +38,7 @@ class DetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailBinding
     private lateinit var model: DetailViewModel
     private lateinit var favoriteAdapter: FavoriteAdapter
-    private lateinit var favoriteHelper: FavoriteHelper
+    private lateinit var uriWithId: Uri
     private var favoriteStatus: Boolean = false
     private var htmlUrl: String? = null
 
@@ -47,10 +57,17 @@ class DetailActivity : AppCompatActivity() {
 
         binding.toolbarLayout.title = user.login
 
-        favoriteHelper = FavoriteHelper.getInstance(applicationContext)
-        favoriteHelper.open()
-        favoriteStatus = favoriteHelper.isLoginExist(user.id.toString())
-        setFavoriteStatus(favoriteStatus)
+        uriWithId = Uri.parse(CONTENT_URI.toString() + "/" + user.id)
+        GlobalScope.launch(Dispatchers.Main) {
+            showLoading(true)
+            val result = async(Dispatchers.IO) {
+                val cursor = contentResolver.query(uriWithId, null, null, null, null)
+                MappingHelper.mapCursorToArrayList(cursor)
+            }
+            showLoading(false)
+            favoriteStatus = result.await().size > 0
+            setFavoriteStatus(favoriteStatus)
+        }
 
         showLoading(true)
         model = ViewModelProvider(
@@ -82,21 +99,21 @@ class DetailActivity : AppCompatActivity() {
         binding.fab.setOnClickListener { view ->
             showLoading(false)
             if (favoriteStatus) {
-                val result = favoriteHelper.deleteFavorite(user.id)
-                if (result > 0) {
-                    setFavoriteStatus(!favoriteStatus)
-                    showSnackbarMessage(getString(R.string.success_remove))
-                } else {
-                    showSnackbarMessage(getString(R.string.failed_remove))
-                }
+                contentResolver.delete(uriWithId, null, null)
+                setFavoriteStatus(!favoriteStatus)
+                showSnackbarMessage(getString(R.string.success_remove))
             } else {
-                val result = favoriteHelper.insertFavorite(user)
-                if (result > 0) {
-                    setFavoriteStatus(!favoriteStatus)
-                    showSnackbarMessage(getString(R.string.success_favorite))
-                } else {
-                    showSnackbarMessage(getString(R.string.failed_favorite))
-                }
+                val args = ContentValues()
+                args.put(BaseColumns._ID, user.id)
+                args.put(LOGIN, user.login)
+                args.put(FavoriteDBContract.FavoriteColumns.AVATAR_URL, user.avatarUrl)
+                args.put(FavoriteDBContract.FavoriteColumns.URL, user.url)
+                args.put(FavoriteDBContract.FavoriteColumns.FOLLOWERS_URL, user.followersUrl)
+                args.put(FavoriteDBContract.FavoriteColumns.FOLLOWING_URL, user.followingUrl)
+                args.put(FavoriteDBContract.FavoriteColumns.REPOS_URL, user.reposUrl)
+                contentResolver.insert(CONTENT_URI, args)
+                setFavoriteStatus(!favoriteStatus)
+                showSnackbarMessage(getString(R.string.success_favorite))
             }
         }
     }
@@ -128,17 +145,21 @@ class DetailActivity : AppCompatActivity() {
         favoriteStatus = status
         if (favoriteStatus) {
             binding.fab.contentDescription = getString(R.string.remove_from_favorite)
-            //binding.fab.setImageResource(android.R.drawable.btn_star_big_on)
             binding.fab.backgroundTintList =
-                ColorStateList.valueOf(ContextCompat.getColor(this, android.R.color.holo_orange_light))
+                ColorStateList.valueOf(
+                    ContextCompat.getColor(
+                        this,
+                        android.R.color.holo_orange_light
+                    )
+                )
             binding.fab.rippleColor = ContextCompat.getColor(this, android.R.color.darker_gray)
             binding.fab.size = FloatingActionButton.SIZE_NORMAL
         } else {
             binding.fab.contentDescription = getString(R.string.mark_as_favourite)
-            //binding.fab.setImageResource(android.R.drawable.btn_star_big_off)
             binding.fab.backgroundTintList =
                 ColorStateList.valueOf(ContextCompat.getColor(this, android.R.color.darker_gray))
-            binding.fab.rippleColor = ContextCompat.getColor(this, android.R.color.holo_orange_light)
+            binding.fab.rippleColor =
+                ContextCompat.getColor(this, android.R.color.holo_orange_light)
             binding.fab.size = FloatingActionButton.SIZE_MINI
         }
     }

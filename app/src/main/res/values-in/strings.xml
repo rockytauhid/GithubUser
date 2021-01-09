@@ -21,10 +21,8 @@
     <string name="favorite">Favorit</string>
     <string name="no_favorite">Anda tidak punya favorit</string>
     <string name="confirm_remove_all">Apakah kamu yakin ingin menghapus semua dari favorit?</string>
-    <string name="failed_favorite">Gagal dimasukkan sebagai favorit</string>
     <string name="success_favorite">Berhasil ditandai sebagai favorit</string>
     <string name="success_remove">Berhasil dihapus dari favorit</string>
-    <string name="failed_remove">Gagal dihapus dari favorit</string>
     <string name="success_remove_all">Berhasil menghapus semua favorit</string>
 
     <string name="settings">Pengaturan</string>

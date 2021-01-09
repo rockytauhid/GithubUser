@@ -22,10 +22,8 @@
     <string name="favorite">Favoris</string>
     <string name="no_favorite">Vous n\'avez pas de favoris</string>
     <string name="confirm_remove_all">Etes vous surs de vouloir enlever tous les favoris?</string>
-    <string name="failed_favorite">Problème lors de l\'ajout aux favoris</string>
     <string name="success_favorite">Ajouté avec succès en tant que favori</string>
     <string name="success_remove">Suppression réussie des favoris</string>
-    <string name="failed_remove">Problème de suppression de favoris</string>
     <string name="success_remove_all">Tous les favoris ont été supprimés</string>
 
     <string name="settings">Réglages</string>

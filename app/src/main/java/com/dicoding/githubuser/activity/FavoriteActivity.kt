@@ -2,7 +2,10 @@ package com.dicoding.githubuser.activity
 
 import android.app.AlertDialog
 import android.content.Intent
+import android.database.ContentObserver
 import android.os.Bundle
+import android.os.Handler
+import android.os.HandlerThread
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -12,8 +15,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.githubuser.R
 import com.dicoding.githubuser.adapter.FavoriteAdapter
 import com.dicoding.githubuser.databinding.ActivityFavoriteBinding
-import com.dicoding.githubuser.db.FavoriteHelper
+import com.dicoding.githubuser.db.FavoriteDBContract.FavoriteColumns.Companion.CONTENT_URI
 import com.dicoding.githubuser.helper.Companion
+import com.dicoding.githubuser.helper.MappingHelper
 import com.dicoding.githubuser.model.User
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
@@ -24,7 +28,6 @@ import kotlinx.coroutines.launch
 class FavoriteActivity : AppCompatActivity() {
     private lateinit var adapter: FavoriteAdapter
     private lateinit var binding: ActivityFavoriteBinding
-    private lateinit var helper: FavoriteHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,10 +43,17 @@ class FavoriteActivity : AppCompatActivity() {
         binding.rvFavorite.layoutManager = LinearLayoutManager(this)
         binding.rvFavorite.adapter = adapter
 
-        helper = FavoriteHelper.getInstance(applicationContext)
-        helper.open()
+        val handlerThread = HandlerThread("DataObserver")
+        handlerThread.start()
+        val handler = Handler(handlerThread.looper)
 
-        loadFavoritesAsync()
+        val myObserver = object : ContentObserver(handler) {
+            override fun onChange(self: Boolean) {
+                loadFavoritesAsync()
+            }
+        }
+
+        contentResolver.registerContentObserver(CONTENT_URI, true, myObserver)
 
         adapter.setOnItemClickCallback(object :
             FavoriteAdapter.OnItemClickCallback {
@@ -68,13 +78,13 @@ class FavoriteActivity : AppCompatActivity() {
                 builder.setMessage(getString(R.string.confirm_remove_all))
                     .setCancelable(false)
                     .setPositiveButton(getString(R.string.text_yes)) { dialog, id ->
-                        val result = helper.deleteAllFavorite()
-                        if (result > 0) {
-                            Toast.makeText(this, getString(R.string.success_remove_all), Toast.LENGTH_LONG).show()
-                            onBackPressed()
-                        } else {
-                            showSnackbarMessage(getString(R.string.failed_remove))
-                        }
+                        contentResolver.delete(CONTENT_URI, null, null)
+                        Toast.makeText(
+                            this@FavoriteActivity,
+                            getString(R.string.success_remove_all),
+                            Toast.LENGTH_LONG
+                        ).show()
+                        finish()
                     }
                     .setNegativeButton(getString(R.string.text_no)) { dialog, id ->
                         dialog.dismiss()
@@ -96,7 +106,7 @@ class FavoriteActivity : AppCompatActivity() {
 
     override fun onSupportNavigateUp(): Boolean {
         val message = intent.getStringExtra(Companion.ALARM_EXTRA_MESSAGE)
-        if(!message.isNullOrEmpty()) {
+        if (!message.isNullOrEmpty()) {
             val intent = Intent(this@FavoriteActivity, MainActivity::class.java)
             startActivity(intent)
         } else {
@@ -110,17 +120,12 @@ class FavoriteActivity : AppCompatActivity() {
         loadFavoritesAsync()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        helper.close()
-    }
-
     private fun loadFavoritesAsync() {
-
         GlobalScope.launch(Dispatchers.Main) {
             showLoading(true)
             val deferredFavorites = async(Dispatchers.IO) {
-                helper.getAllFavorite()
+                val cursor = contentResolver.query(CONTENT_URI, null, null, null, null)
+                MappingHelper.mapCursorToArrayList(cursor)
             }
             showLoading(false)
             val listFavorites = deferredFavorites.await()
@@ -130,7 +135,8 @@ class FavoriteActivity : AppCompatActivity() {
                 adapter.removeAllItems()
                 showSnackbarMessage(getString(R.string.no_favorite))
             }
-            binding.tvResult.text = StringBuilder("${getString(R.string.found)} ${listFavorites.size} ${getString(R.string.users)}").toString()
+            binding.tvResult.text =
+                StringBuilder("${getString(R.string.found)} ${listFavorites.size} ${getString(R.string.users)}").toString()
         }
     }
 

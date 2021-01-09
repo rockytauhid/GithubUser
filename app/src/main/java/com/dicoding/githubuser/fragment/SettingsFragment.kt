@@ -1,5 +1,6 @@
 package com.dicoding.githubuser.fragment
 
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -10,7 +11,7 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import androidx.preference.SwitchPreference
 import com.dicoding.githubuser.R
-
+import com.dicoding.githubuser.notification.AlarmReceiver
 
 class SettingsFragment : PreferenceFragmentCompat(),
     SharedPreferences.OnSharedPreferenceChangeListener, PreferenceManager.OnPreferenceTreeClickListener {
@@ -19,6 +20,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
     private lateinit var CHANGELANGUAGE: String
     private lateinit var dailyReminderPreference : SwitchPreference
     private lateinit var changeLanguagePreference : Preference
+    private lateinit var alarmReceiver: AlarmReceiver
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey)
@@ -38,6 +40,10 @@ class SettingsFragment : PreferenceFragmentCompat(),
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
         if (key == DAILYREMINDER) {
             dailyReminderPreference.isChecked = sharedPreferences.getBoolean(DAILYREMINDER, false)
+            if (dailyReminderPreference.isChecked)
+                alarmReceiver.setRepeatingAlarm(activity?.baseContext as Context)
+            else
+                alarmReceiver.cancelAlarm(activity?.baseContext as Context)
         }
     }
 
@@ -54,11 +60,17 @@ class SettingsFragment : PreferenceFragmentCompat(),
         return true
     }
 
+    fun setDailyAlarm() {
+        dailyReminderPreference.isChecked = !dailyReminderPreference.isChecked
+    }
+
     private fun init() {
         DAILYREMINDER = getString(R.string.key_daily_reminder)
         dailyReminderPreference = findPreference<SwitchPreference>(DAILYREMINDER) as SwitchPreference
 
         CHANGELANGUAGE = getString(R.string.key_change_language)
         changeLanguagePreference = findPreference<Preference>(CHANGELANGUAGE) as Preference
+
+        alarmReceiver = AlarmReceiver()
     }
 }

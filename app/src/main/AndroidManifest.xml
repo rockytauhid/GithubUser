@@ -14,10 +14,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GithubUser"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.SettingActivity" />
-        <activity android:name=".activity.FavoriteActivity" />
+        <receiver
+            android:name=".notification.AlarmReceiver"
+            android:enabled="true" />
+        <activity
+            android:name=".activity.SettingActivity"
+            android:parentActivityName=".activity.MainActivity" />
+        <activity
+            android:name=".activity.FavoriteActivity"
+            android:parentActivityName=".activity.MainActivity" />
         <activity
             android:name=".activity.DetailActivity"
+            android:parentActivityName=".activity.MainActivity"
             android:theme="@style/Theme.GithubUser.NoActionBar" />
         <activity
             android:name=".activity.SplashActivity"

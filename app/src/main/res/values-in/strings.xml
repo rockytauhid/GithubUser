@@ -37,4 +37,9 @@
     <string name="daily_reminder_title">Pengingat Harian</string>
     <string name="daily_reminder_summary_on">Ketuk untuk menonaktifkan pengingat harian</string>
     <string name="daily_reminder_summary_off">Ketuk untuk mengaktifkan pengingat harian</string>
+
+    <!-- Daily Reminder Message -->
+    <string name="alarm_cancelled">Alarm dibatalkan</string>
+    <string name="alarm_setup">Alarm sukses ditambahkan</string>
+    <string name="alarm_message">Saatnya untuk melihat daftar favorit!</string>
 </resources>

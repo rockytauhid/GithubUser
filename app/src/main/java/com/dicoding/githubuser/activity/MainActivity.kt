@@ -1,5 +1,6 @@
 package com.dicoding.githubuser.activity
 
+import android.app.NotificationManager
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
@@ -18,16 +19,19 @@ import com.dicoding.githubuser.helper.Companion
 import com.dicoding.githubuser.model.User
 import com.dicoding.githubuser.viewmodel.MainViewModel
 
+
 class MainActivity : AppCompatActivity() {
     private lateinit var adapter: UsersAdapter
     private lateinit var binding: ActivityMainBinding
     private lateinit var model: MainViewModel
+    private lateinit var notificationmanager : NotificationManager
     private var searchQuery: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        notificationmanager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
 
         adapter = UsersAdapter()
         adapter.notifyDataSetChanged()

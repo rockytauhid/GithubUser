@@ -37,4 +37,9 @@
     <string name="daily_reminder_title">Rappel quotidien</string>
     <string name="daily_reminder_summary_on">Appuyez pour désactiver le rappel quotidien</string>
     <string name="daily_reminder_summary_off">Appuyez pour activer le rappel quotidien</string>
+
+    <!-- Daily Reminder Message -->
+    <string name="alarm_cancelled">L\'alarme est annulée</string>
+    <string name="alarm_setup">Alarme configurée avec succès</string>
+    <string name="alarm_message">Il est temps de découvrir les favoris!</string>
 </resources>

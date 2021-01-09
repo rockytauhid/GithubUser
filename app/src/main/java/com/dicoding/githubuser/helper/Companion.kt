@@ -14,6 +14,7 @@ class Companion {
         const val STATE_RESULT = "state_result"
         const val EXTRA_FAVORITES = "extra_favorites"
         const val EXTRA_POSITION = "extra_position"
+        const val ALARM_EXTRA_MESSAGE = "alarm_message"
 
         @JvmStatic
         fun newInstance(fragment: Fragment, index: Int) =

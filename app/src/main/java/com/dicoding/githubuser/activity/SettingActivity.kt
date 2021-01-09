@@ -17,6 +17,7 @@ class SettingActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
+        SettingsFragment().setDailyAlarm()
         onBackPressed()
         return true
     }

@@ -42,4 +42,9 @@
     <string name="daily_reminder_summary_on">Tap to turn OFF daily reminder
     </string>
     <string name="daily_reminder_summary_off">Tap to turn ON daily reminder</string>
+
+    <!-- Daily Reminder Message -->
+    <string name="alarm_cancelled">Alarm is cancelled</string>
+    <string name="alarm_setup">Alarm successfully set up</string>
+    <string name="alarm_message">It\'s time to check out the favorites!</string>
 </resources>

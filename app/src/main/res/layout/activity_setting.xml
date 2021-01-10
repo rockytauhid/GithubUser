@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginLeft="@dimen/general_padding_margin"
+    android:layout_marginRight="@dimen/general_padding_margin"
     tools:context=".activity.SettingActivity">
 
     <FrameLayout

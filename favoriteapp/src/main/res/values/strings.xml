@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Favorite App</string>
+    <string name="user_photo">User photo</string>
+    <string name="found">Found</string>
+    <string name="users">users</string>
+    <string name="no_favorite">You don\'t have any favorite</string>
+</resources>

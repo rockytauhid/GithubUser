@@ -27,14 +27,17 @@ class AlarmReceiver : BroadcastReceiver() {
     fun setRepeatingAlarm(context: Context) {
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val title = context.getString(R.string.daily_reminder_title)
+
         val calendar = Calendar.getInstance()
-        calendar.add(Calendar.SECOND, 5)
+        calendar.set(Calendar.HOUR, 9)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.SECOND, 0)
 
         alarmManager.setInexactRepeating(
             AlarmManager.RTC_WAKEUP,
             calendar.timeInMillis,
             AlarmManager.INTERVAL_DAY,
-            getPendingIntent(context, title, context.getString(R.string.alarm_message))
+            getPendingIntent(context, context.getString(R.string.alarm_message))
         )
         showToast(context, title, context.getString(R.string.alarm_setup))
     }
@@ -43,7 +46,7 @@ class AlarmReceiver : BroadcastReceiver() {
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val title = context.getString(R.string.daily_reminder_title)
         val message = context.getString(R.string.alarm_cancelled)
-        val pendingIntent = getPendingIntent(context, title, message)
+        val pendingIntent = getPendingIntent(context, message)
         pendingIntent?.cancel()
         alarmManager.cancel(pendingIntent)
         showToast(context, title, message)
@@ -95,7 +98,7 @@ class AlarmReceiver : BroadcastReceiver() {
         notificationManagerCompat.notify(notifId, notification)
     }
 
-    private fun getPendingIntent(context: Context, type: String, message: String): PendingIntent? {
+    private fun getPendingIntent(context: Context, message: String): PendingIntent? {
         val intent =  Intent(context, AlarmReceiver::class.java)
         intent.putExtra(Companion.ALARM_EXTRA_MESSAGE, message)
         return PendingIntent.getBroadcast(

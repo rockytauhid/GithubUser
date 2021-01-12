@@ -1,6 +1,7 @@
 package com.dicoding.favoriteapp.helper
 
 import android.database.Cursor
+import android.provider.BaseColumns._ID
 import com.dicoding.favoriteapp.db.DatabaseContract
 import com.dicoding.favoriteapp.model.User
 
@@ -10,7 +11,7 @@ object MappingHelper {
         cursor?.apply {
             while (moveToNext()) {
                 val user = User()
-                user.id = getInt(getColumnIndexOrThrow(DatabaseContract.FavoriteColumns._ID))
+                user.id = getInt(getColumnIndexOrThrow(_ID))
                 user.login = getString(getColumnIndexOrThrow(DatabaseContract.FavoriteColumns.LOGIN))
                 user.avatarUrl = getString(getColumnIndexOrThrow(DatabaseContract.FavoriteColumns.AVATAR_URL))
                 user.url = getString(getColumnIndexOrThrow(DatabaseContract.FavoriteColumns.URL))

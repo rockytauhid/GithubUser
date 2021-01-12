@@ -1,6 +1,7 @@
 package com.dicoding.githubuser.helper
 
 import android.database.Cursor
+import android.provider.BaseColumns._ID
 import com.dicoding.githubuser.db.FavoriteDBContract
 import com.dicoding.githubuser.model.User
 import org.json.JSONArray
@@ -28,7 +29,7 @@ object MappingHelper {
         cursor?.apply {
             while (moveToNext()) {
                 val user = User()
-                user.id = getInt(getColumnIndexOrThrow(FavoriteDBContract.FavoriteColumns._ID))
+                user.id = getInt(getColumnIndexOrThrow(_ID))
                 user.login = getString(getColumnIndexOrThrow(FavoriteDBContract.FavoriteColumns.LOGIN))
                 user.avatarUrl = getString(getColumnIndexOrThrow(FavoriteDBContract.FavoriteColumns.AVATAR_URL))
                 user.url = getString(getColumnIndexOrThrow(FavoriteDBContract.FavoriteColumns.URL))

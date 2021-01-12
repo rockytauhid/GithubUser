@@ -12,12 +12,13 @@ import com.bumptech.glide.Glide
 import com.dicoding.githubuser.R
 import com.dicoding.githubuser.db.FavoriteDBContract
 import com.dicoding.githubuser.helper.MappingHelper
+import com.dicoding.githubuser.model.User
 
 internal class FavoriteWidgetRemoteViewFactory(private val mContext: Context) :
     RemoteViewsService.RemoteViewsFactory {
 
     private var mCursor: Cursor? = null
-    private var mWidgetItems = ArrayList<String>()
+    private var mWidgetItems = ArrayList<User>()
 
     override fun onCreate() {
 
@@ -35,10 +36,7 @@ internal class FavoriteWidgetRemoteViewFactory(private val mContext: Context) :
             null,
             null
         ).also {
-            val listFavorites = MappingHelper.mapCursorToArrayList(it)
-            for (user in listFavorites) {
-                mWidgetItems.add(user.avatarUrl.toString())
-            }
+            mWidgetItems = MappingHelper.mapCursorToArrayList(it)
         }
         Binder.restoreCallingIdentity(identityToken)
     }
@@ -52,19 +50,19 @@ internal class FavoriteWidgetRemoteViewFactory(private val mContext: Context) :
     override fun getCount(): Int = mWidgetItems.size
 
     override fun getViewAt(position: Int): RemoteViews {
-        val rv = RemoteViews(mContext.packageName, R.layout.item_favorite_mini_widget)
+        val rv = RemoteViews(mContext.packageName, R.layout.item_favorite_widget)
         try {
             val bitmap: Bitmap = Glide.with(mContext)
                 .asBitmap()
-                .load(mWidgetItems[position])
-                .submit(200, 200)
+                .load(mWidgetItems[position].avatarUrl)
+                .submit(300, 300)
                 .get()
             rv.setImageViewBitmap(R.id.img_avatar_widget, bitmap)
         } catch (e: Exception) {
             e.printStackTrace()
         }
         val extras = bundleOf(
-            FavoriteWidget.EXTRA_ITEM to position
+            FavoriteWidget.EXTRA_ITEM to mWidgetItems[position].login
         )
         val fillInIntent = Intent()
         fillInIntent.putExtras(extras)

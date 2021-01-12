@@ -28,7 +28,7 @@
 
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/favorite_mini_widget_info" />
+                android:resource="@xml/favorite_widget_info" />
         </receiver>
 
         <provider

@@ -18,8 +18,7 @@ internal class FavoriteDBHelper(context: Context): SQLiteOpenHelper(context, DAT
         private const val DATABASE_NAME = "favorite.db"
         private const val DATABASE_VERSION = 1
         private const val SQL_CREATE_ENTRIES = "CREATE TABLE ${FavoriteDBContract.FavoriteColumns.TABLE_NAME}" +
-                " (${FavoriteDBContract.FavoriteColumns._ID} INTEGER PRIMARY KEY," +
-                " ${FavoriteDBContract.FavoriteColumns.LOGIN} TEXT NOT NULL," +
+                " (${FavoriteDBContract.FavoriteColumns.LOGIN} TEXT NOT NULL," +
                 " ${FavoriteDBContract.FavoriteColumns.AVATAR_URL} TEXT NOT NULL," +
                 " ${FavoriteDBContract.FavoriteColumns.URL} TEXT NOT NULL," +
                 " ${FavoriteDBContract.FavoriteColumns.FOLLOWERS_URL} TEXT NOT NULL," +

@@ -15,12 +15,16 @@ class FavoriteWidget : AppWidgetProvider() {
         private const val TOAST_ACTION = "com.dicoding.githubuser.TOAST_ACTION"
         const val EXTRA_ITEM = "com.dicoding.githubuser.EXTRA_ITEM"
 
-        private fun updateAppWidget(context: Context, appWidgetManager: AppWidgetManager, appWidgetId: Int) {
+        private fun updateAppWidget(
+            context: Context,
+            appWidgetManager: AppWidgetManager,
+            appWidgetId: Int
+        ) {
             val intent = Intent(context, FavoriteWidgetRemoveViewService::class.java)
             intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
             intent.data = intent.toUri(Intent.URI_INTENT_SCHEME).toUri()
 
-            val views = RemoteViews(context.packageName, R.layout.favorite_mini_widget)
+            val views = RemoteViews(context.packageName, R.layout.favorite_widget)
             views.setRemoteAdapter(R.id.stack_view, intent)
             views.setEmptyView(R.id.stack_view, R.id.empty_view)
 
@@ -29,7 +33,12 @@ class FavoriteWidget : AppWidgetProvider() {
             toastIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
             intent.data = intent.toUri(Intent.URI_INTENT_SCHEME).toUri()
 
-            val toastPendingIntent = PendingIntent.getBroadcast(context, 0, toastIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+            val toastPendingIntent = PendingIntent.getBroadcast(
+                context,
+                0,
+                toastIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT
+            )
             views.setPendingIntentTemplate(R.id.stack_view, toastPendingIntent)
             appWidgetManager.updateAppWidget(appWidgetId, views)
         }
@@ -39,8 +48,8 @@ class FavoriteWidget : AppWidgetProvider() {
         super.onReceive(context, intent)
         if (intent.action != null) {
             if (intent.action == TOAST_ACTION) {
-                val viewIndex = intent.getIntExtra(EXTRA_ITEM, 0)
-                Toast.makeText(context, "Touched view $viewIndex", Toast.LENGTH_SHORT).show()
+                val login = intent.getStringExtra(EXTRA_ITEM)
+                Toast.makeText(context, "This is $login", Toast.LENGTH_SHORT).show()
             }
         }
     }

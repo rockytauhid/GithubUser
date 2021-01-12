@@ -1,11 +1,9 @@
 package com.dicoding.githubuser.activity
 
-import android.content.ContentValues
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.net.Uri
 import android.os.Bundle
-import android.provider.BaseColumns
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -18,9 +16,7 @@ import com.dicoding.githubuser.R
 import com.dicoding.githubuser.adapter.FavoriteAdapter
 import com.dicoding.githubuser.adapter.SectionsPagerAdapter
 import com.dicoding.githubuser.databinding.ActivityDetailBinding
-import com.dicoding.githubuser.db.FavoriteDBContract
 import com.dicoding.githubuser.db.FavoriteDBContract.FavoriteColumns.Companion.CONTENT_URI
-import com.dicoding.githubuser.db.FavoriteDBContract.FavoriteColumns.Companion.LOGIN
 import com.dicoding.githubuser.helper.Companion
 import com.dicoding.githubuser.helper.MappingHelper
 import com.dicoding.githubuser.model.User
@@ -96,22 +92,14 @@ class DetailActivity : AppCompatActivity() {
 
         favoriteAdapter = FavoriteAdapter()
 
-        binding.fab.setOnClickListener { view ->
+        binding.fab.setOnClickListener {
             showLoading(false)
             if (favoriteStatus) {
-                contentResolver.delete(uriWithId, null, null)
+                model.deleteFavorite(this, uriWithId, null, null)
                 setFavoriteStatus(!favoriteStatus)
                 showSnackbarMessage(getString(R.string.success_remove))
             } else {
-                val args = ContentValues()
-                args.put(BaseColumns._ID, user.id)
-                args.put(LOGIN, user.login)
-                args.put(FavoriteDBContract.FavoriteColumns.AVATAR_URL, user.avatarUrl)
-                args.put(FavoriteDBContract.FavoriteColumns.URL, user.url)
-                args.put(FavoriteDBContract.FavoriteColumns.FOLLOWERS_URL, user.followersUrl)
-                args.put(FavoriteDBContract.FavoriteColumns.FOLLOWING_URL, user.followingUrl)
-                args.put(FavoriteDBContract.FavoriteColumns.REPOS_URL, user.reposUrl)
-                contentResolver.insert(CONTENT_URI, args)
+                model.insertFavorite(this, user)
                 setFavoriteStatus(!favoriteStatus)
                 showSnackbarMessage(getString(R.string.success_favorite))
             }

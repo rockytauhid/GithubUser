@@ -16,8 +16,8 @@ import com.dicoding.githubuser.notification.AlarmReceiver
 class SettingsFragment : PreferenceFragmentCompat(),
     SharedPreferences.OnSharedPreferenceChangeListener, PreferenceManager.OnPreferenceTreeClickListener {
 
-    private lateinit var DAILYREMINDER: String
-    private lateinit var CHANGELANGUAGE: String
+    private lateinit var keyDailyRemider: String
+    private lateinit var keyChangeLanguage: String
     private lateinit var dailyReminderPreference : SwitchPreference
     private lateinit var changeLanguagePreference : Preference
     private lateinit var alarmReceiver: AlarmReceiver
@@ -38,8 +38,8 @@ class SettingsFragment : PreferenceFragmentCompat(),
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
-        if (key == DAILYREMINDER) {
-            dailyReminderPreference.isChecked = sharedPreferences.getBoolean(DAILYREMINDER, false)
+        if (key == keyDailyRemider) {
+            dailyReminderPreference.isChecked = sharedPreferences.getBoolean(keyDailyRemider, false)
             if (dailyReminderPreference.isChecked)
                 alarmReceiver.setRepeatingAlarm(activity?.baseContext as Context)
             else
@@ -49,7 +49,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
 
     override fun onPreferenceTreeClick(preference: Preference): Boolean {
         when (preference.key) {
-            CHANGELANGUAGE -> {
+            keyChangeLanguage -> {
                 val currentLocale = ConfigurationCompat.getLocales(resources.configuration)[0]
                 changeLanguagePreference.summary =
                     getString(R.string.change_language_summary) + " " + "(${currentLocale.language})"
@@ -61,11 +61,11 @@ class SettingsFragment : PreferenceFragmentCompat(),
     }
 
     private fun init() {
-        DAILYREMINDER = getString(R.string.key_daily_reminder)
-        dailyReminderPreference = findPreference<SwitchPreference>(DAILYREMINDER) as SwitchPreference
+        keyDailyRemider = getString(R.string.key_daily_reminder)
+        dailyReminderPreference = findPreference<SwitchPreference>(keyDailyRemider) as SwitchPreference
 
-        CHANGELANGUAGE = getString(R.string.key_change_language)
-        changeLanguagePreference = findPreference<Preference>(CHANGELANGUAGE) as Preference
+        keyChangeLanguage = getString(R.string.key_change_language)
+        changeLanguagePreference = findPreference<Preference>(keyChangeLanguage) as Preference
 
         alarmReceiver = AlarmReceiver()
     }

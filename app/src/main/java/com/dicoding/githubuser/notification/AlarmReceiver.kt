@@ -15,13 +15,12 @@ import com.dicoding.githubuser.helper.Companion
 import java.util.*
 
 class AlarmReceiver : BroadcastReceiver() {
-    private val ID_REPEATING = 101
+    private val idRepeating = 101
 
     override fun onReceive(context: Context, intent: Intent) {
         val message = intent.getStringExtra(Companion.ALARM_EXTRA_MESSAGE)
         val title = context.getString(R.string.favorite)
-        val notifId = ID_REPEATING
-        showAlarmNotification(context, title, message.toString(), notifId)
+        showAlarmNotification(context, title, message.toString())
     }
 
     fun setRepeatingAlarm(context: Context) {
@@ -55,8 +54,7 @@ class AlarmReceiver : BroadcastReceiver() {
     private fun showAlarmNotification(
         context: Context,
         title: String,
-        message: String,
-        notifId: Int
+        message: String
     ) {
         val channelId = "Channel_1"
         val channelName = "AlarmManager channel"
@@ -65,14 +63,15 @@ class AlarmReceiver : BroadcastReceiver() {
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
 
-        val intent = Intent(context, FavoriteActivity::class.java).apply {
+        /*val intent = Intent(context, FavoriteActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        }
+        }*/
+        val intent = Intent(context, FavoriteActivity::class.java)
         intent.putExtra(Companion.ALARM_EXTRA_MESSAGE, message)
         val pendingIntent = TaskStackBuilder.create(context)
             .addParentStack(FavoriteActivity::class.java)
             .addNextIntent(intent)
-            .getPendingIntent(ID_REPEATING, PendingIntent.FLAG_UPDATE_CURRENT)
+            .getPendingIntent(idRepeating, PendingIntent.FLAG_UPDATE_CURRENT)
 
         val builder = NotificationCompat.Builder(context, channelId)
             .setSmallIcon(R.drawable.ic_access_time_black)
@@ -95,7 +94,7 @@ class AlarmReceiver : BroadcastReceiver() {
             notificationManagerCompat.createNotificationChannel(channel)
         }
         val notification = builder.build()
-        notificationManagerCompat.notify(notifId, notification)
+        notificationManagerCompat.notify(idRepeating, notification)
     }
 
     private fun getPendingIntent(context: Context, message: String): PendingIntent? {
@@ -103,7 +102,7 @@ class AlarmReceiver : BroadcastReceiver() {
         intent.putExtra(Companion.ALARM_EXTRA_MESSAGE, message)
         return PendingIntent.getBroadcast(
             context,
-            ID_REPEATING,
+            idRepeating,
             intent,
             PendingIntent.FLAG_UPDATE_CURRENT
         )

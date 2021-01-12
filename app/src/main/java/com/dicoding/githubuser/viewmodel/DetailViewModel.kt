@@ -1,11 +1,16 @@
 package com.dicoding.githubuser.viewmodel
 
+import android.content.ContentValues
+import android.content.Context
+import android.net.Uri
+import android.provider.BaseColumns
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.dicoding.githubuser.helper.MappingHelper
+import com.dicoding.githubuser.db.FavoriteDBContract
 import com.dicoding.githubuser.helper.Companion
+import com.dicoding.githubuser.helper.MappingHelper
 import com.dicoding.githubuser.model.Detail
 import com.dicoding.githubuser.model.Repo
 import com.dicoding.githubuser.model.User
@@ -13,7 +18,6 @@ import com.loopj.android.http.AsyncHttpResponseHandler
 import cz.msebera.android.httpclient.Header
 import org.json.JSONArray
 import org.json.JSONObject
-
 
 class DetailViewModel: ViewModel() {
     private val userDetail = MutableLiveData<Detail>()
@@ -207,5 +211,21 @@ class DetailViewModel: ViewModel() {
 
     fun getListRepos(): LiveData<java.util.ArrayList<Repo>> {
         return listRepos
+    }
+
+    fun deleteFavorite(context: Context, uriWithId: Uri, where: String?, args: Array<out String>?) {
+        context.contentResolver.delete(uriWithId, where, args)
+    }
+
+    fun insertFavorite (context: Context, user: User){
+        val args = ContentValues()
+        args.put(BaseColumns._ID, user.id)
+        args.put(FavoriteDBContract.FavoriteColumns.LOGIN, user.login)
+        args.put(FavoriteDBContract.FavoriteColumns.AVATAR_URL, user.avatarUrl)
+        args.put(FavoriteDBContract.FavoriteColumns.URL, user.url)
+        args.put(FavoriteDBContract.FavoriteColumns.FOLLOWERS_URL, user.followersUrl)
+        args.put(FavoriteDBContract.FavoriteColumns.FOLLOWING_URL, user.followingUrl)
+        args.put(FavoriteDBContract.FavoriteColumns.REPOS_URL, user.reposUrl)
+        context.contentResolver.insert(FavoriteDBContract.FavoriteColumns.CONTENT_URI, args)
     }
 }

@@ -77,7 +77,7 @@ class FavoriteActivity : AppCompatActivity() {
                 val builder = AlertDialog.Builder(this)
                 builder.setMessage(getString(R.string.confirm_remove_all))
                     .setCancelable(false)
-                    .setPositiveButton(getString(R.string.text_yes)) { dialog, id ->
+                    .setPositiveButton(getString(R.string.text_yes)) { dialog, _ ->
                         contentResolver.delete(CONTENT_URI, null, null)
                         Toast.makeText(
                             this@FavoriteActivity,
@@ -86,7 +86,7 @@ class FavoriteActivity : AppCompatActivity() {
                         ).show()
                         finish()
                     }
-                    .setNegativeButton(getString(R.string.text_no)) { dialog, id ->
+                    .setNegativeButton(getString(R.string.text_no)) { dialog, _ ->
                         dialog.dismiss()
                     }
                 val alert = builder.create()

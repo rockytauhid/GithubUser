@@ -35,7 +35,7 @@
     <string name="change_language_summary">Ketuk untuk mengubah bahasa</string>
 
     <!-- Daily Reminder Preferences -->
-    <string name="daily_reminder_title">Pengingat Harian</string>
+    <string name="daily_reminder_title">Pengingat Harian (9 AM)</string>
     <string name="daily_reminder_summary_on">Ketuk untuk menonaktifkan pengingat harian</string>
     <string name="daily_reminder_summary_off">Ketuk untuk mengaktifkan pengingat harian</string>
 

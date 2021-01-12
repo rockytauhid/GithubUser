@@ -38,7 +38,7 @@
     <string name="change_language_summary">Tap to change the language</string>
 
     <!-- Daily Reminder Preferences -->
-    <string name="daily_reminder_title">Daily Reminder</string>
+    <string name="daily_reminder_title">Daily Reminder (9 AM)</string>
     <string name="key_daily_reminder" translatable="false">key_daily_reminder</string>
     <string name="daily_reminder_summary_on">Tap to turn OFF daily reminder
     </string>
@@ -48,4 +48,8 @@
     <string name="alarm_cancelled">Alarm is cancelled</string>
     <string name="alarm_setup">Alarm successfully set up</string>
     <string name="alarm_message">It\'s time to check out the favorites!</string>
+
+    <!-- Widget -->
+    <string name="appwidget_text" translatable="false">Github Favorite User</string>
+    <string name="empty_text" translatable="false">NO DATA</string>
 </resources>

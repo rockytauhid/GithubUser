@@ -1,14 +1,9 @@
 package com.dicoding.githubuser.viewmodel
 
-import android.content.ContentValues
-import android.content.Context
-import android.net.Uri
-import android.provider.BaseColumns
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.dicoding.githubuser.db.FavoriteDBContract
 import com.dicoding.githubuser.helper.Companion
 import com.dicoding.githubuser.helper.MappingHelper
 import com.dicoding.githubuser.model.Detail
@@ -19,7 +14,7 @@ import cz.msebera.android.httpclient.Header
 import org.json.JSONArray
 import org.json.JSONObject
 
-class DetailViewModel: ViewModel() {
+class DetailViewModel : ViewModel() {
     private val userDetail = MutableLiveData<Detail>()
     private val listFollowers = MutableLiveData<ArrayList<User>>()
     private val listFollowing = MutableLiveData<ArrayList<User>>()
@@ -36,24 +31,26 @@ class DetailViewModel: ViewModel() {
                 headers: Array<Header>,
                 responseBody: ByteArray
             ) {
-                val result = String(responseBody)
-                try {
-                    val responseObject = JSONObject(result)
-                    val item = Detail()
-                    item.htmlUrl = responseObject.getString("html_url")
-                    item.name = responseObject.getString("name")
-                    item.company = responseObject.getString("company")
-                    item.location = responseObject.getString("location")
-                    item.followers = responseObject.getInt("followers")
-                    item.following = responseObject.getInt("following")
-                    item.publicRepos = responseObject.getInt("public_repos")
+                if (statusCode == 200) {
+                    val result = String(responseBody)
+                    try {
+                        val responseObject = JSONObject(result)
+                        val item = Detail()
+                        item.htmlUrl = responseObject.getString("html_url")
+                        item.name = responseObject.getString("name")
+                        item.company = responseObject.getString("company")
+                        item.location = responseObject.getString("location")
+                        item.followers = responseObject.getInt("followers")
+                        item.following = responseObject.getInt("following")
+                        item.publicRepos = responseObject.getInt("public_repos")
 
-                    userDetail.postValue((item))
-                    followers.postValue(item.followers)
-                    following.postValue(item.following)
-                    publicRepos.postValue(item.publicRepos)
-                } catch (e: Exception) {
-                    Log.e("Exception", e.message.toString())
+                        userDetail.postValue((item))
+                        followers.postValue(item.followers)
+                        following.postValue(item.following)
+                        publicRepos.postValue(item.publicRepos)
+                    } catch (e: Exception) {
+                        Log.e("Exception", e.message.toString())
+                    }
                 }
             }
 
@@ -98,13 +95,15 @@ class DetailViewModel: ViewModel() {
                 headers: Array<Header>,
                 responseBody: ByteArray
             ) {
-                try {
-                    val result = String(responseBody)
-                    val jsonArray = JSONArray(result)
-                    MappingHelper.mapJsonArrayToArrayList(jsonArray)
-                    listFollowers.postValue(MappingHelper.mapJsonArrayToArrayList(jsonArray))
-                } catch (e: Exception) {
-                    Log.d("Exception", e.message.toString())
+                if (statusCode == 200) {
+                    try {
+                        val result = String(responseBody)
+                        val jsonArray = JSONArray(result)
+                        MappingHelper.mapJsonArrayToArrayList(jsonArray)
+                        listFollowers.postValue(MappingHelper.mapJsonArrayToArrayList(jsonArray))
+                    } catch (e: Exception) {
+                        Log.d("Exception", e.message.toString())
+                    }
                 }
             }
 
@@ -137,12 +136,14 @@ class DetailViewModel: ViewModel() {
                 headers: Array<Header>,
                 responseBody: ByteArray
             ) {
-                try {
-                    val result = String(responseBody)
-                    val jsonArray = JSONArray(result)
-                    listFollowing.postValue(MappingHelper.mapJsonArrayToArrayList(jsonArray))
-                } catch (e: Exception) {
-                    Log.d("Exception", e.message.toString())
+                if (statusCode == 200) {
+                    try {
+                        val result = String(responseBody)
+                        val jsonArray = JSONArray(result)
+                        listFollowing.postValue(MappingHelper.mapJsonArrayToArrayList(jsonArray))
+                    } catch (e: Exception) {
+                        Log.d("Exception", e.message.toString())
+                    }
                 }
             }
 
@@ -211,21 +212,5 @@ class DetailViewModel: ViewModel() {
 
     fun getListRepos(): LiveData<java.util.ArrayList<Repo>> {
         return listRepos
-    }
-
-    fun deleteFavorite(context: Context, uriWithId: Uri, where: String?, args: Array<out String>?) {
-        context.contentResolver.delete(uriWithId, where, args)
-    }
-
-    fun insertFavorite (context: Context, user: User){
-        val args = ContentValues()
-        args.put(BaseColumns._ID, user.id)
-        args.put(FavoriteDBContract.FavoriteColumns.LOGIN, user.login)
-        args.put(FavoriteDBContract.FavoriteColumns.AVATAR_URL, user.avatarUrl)
-        args.put(FavoriteDBContract.FavoriteColumns.URL, user.url)
-        args.put(FavoriteDBContract.FavoriteColumns.FOLLOWERS_URL, user.followersUrl)
-        args.put(FavoriteDBContract.FavoriteColumns.FOLLOWING_URL, user.followingUrl)
-        args.put(FavoriteDBContract.FavoriteColumns.REPOS_URL, user.reposUrl)
-        context.contentResolver.insert(FavoriteDBContract.FavoriteColumns.CONTENT_URI, args)
     }
 }

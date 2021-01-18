@@ -3,21 +3,18 @@ package com.dicoding.favoriteapp.activity
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.favoriteapp.R
 import com.dicoding.favoriteapp.adapter.ListAdapter
 import com.dicoding.favoriteapp.databinding.ActivityMainBinding
-import com.dicoding.favoriteapp.db.DatabaseContract.FavoriteColumns.Companion.CONTENT_URI
-import com.dicoding.favoriteapp.helper.MappingHelper
+import com.dicoding.favoriteapp.viewmodel.MainViewModel
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     private lateinit var adapter: ListAdapter
     private lateinit var binding: ActivityMainBinding
+    private lateinit var model: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +27,11 @@ class MainActivity : AppCompatActivity() {
         binding.rvFavorite.layoutManager = LinearLayoutManager(this)
         binding.rvFavorite.adapter = adapter
 
+        model = ViewModelProvider(
+            this,
+            ViewModelProvider.NewInstanceFactory()
+        ).get(MainViewModel::class.java)
+
         loadFavoritesAsync()
     }
 
@@ -39,23 +41,21 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadFavoritesAsync() {
-        GlobalScope.launch(Dispatchers.Main) {
-            showLoading(true)
-            val deferredFavorites = async(Dispatchers.IO) {
-                val cursor = contentResolver.query(CONTENT_URI, null, null, null, null)
-                MappingHelper.mapCursorToArrayList(cursor)
-            }
-            showLoading(false)
-            val listFavorites = deferredFavorites.await()
-            if (listFavorites.size > 0) {
-                adapter.setData(listFavorites)
+        showLoading(true)
+        if (model.getListFavorites().value == null)
+            model.setListFavoriteAsync(this)
+
+        model.getListFavorites().observe(this, { data ->
+            if (data.size > 0) {
+                adapter.setData(data)
             } else {
                 adapter.removeAllItems()
                 showSnackbarMessage(getString(R.string.no_favorite))
             }
+            showLoading(false)
             binding.tvResult.text =
-                StringBuilder("${getString(R.string.found)} ${listFavorites.size} ${getString(R.string.users)}").toString()
-        }
+                StringBuilder("${getString(R.string.found)} ${data.size} ${getString(R.string.users)}").toString()
+        })
     }
 
     private fun showSnackbarMessage(message: String) {

@@ -2,32 +2,26 @@ package com.dicoding.githubuser.activity
 
 import android.app.AlertDialog
 import android.content.Intent
-import android.database.ContentObserver
 import android.os.Bundle
-import android.os.Handler
-import android.os.HandlerThread
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.githubuser.R
 import com.dicoding.githubuser.adapter.FavoriteAdapter
 import com.dicoding.githubuser.databinding.ActivityFavoriteBinding
-import com.dicoding.githubuser.db.FavoriteDBContract.FavoriteColumns.Companion.CONTENT_URI
 import com.dicoding.githubuser.helper.Companion
-import com.dicoding.githubuser.helper.MappingHelper
 import com.dicoding.githubuser.model.User
+import com.dicoding.githubuser.viewmodel.FavoriteViewModel
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
 
 class FavoriteActivity : AppCompatActivity() {
     private lateinit var adapter: FavoriteAdapter
     private lateinit var binding: ActivityFavoriteBinding
+    private lateinit var model: FavoriteViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,17 +37,12 @@ class FavoriteActivity : AppCompatActivity() {
         binding.rvFavorite.layoutManager = LinearLayoutManager(this)
         binding.rvFavorite.adapter = adapter
 
-        val handlerThread = HandlerThread("DataObserver")
-        handlerThread.start()
-        val handler = Handler(handlerThread.looper)
+        model = ViewModelProvider(
+            this,
+            ViewModelProvider.NewInstanceFactory()
+        ).get(FavoriteViewModel::class.java)
 
-        val myObserver = object : ContentObserver(handler) {
-            override fun onChange(self: Boolean) {
-                loadFavoritesAsync()
-            }
-        }
-
-        contentResolver.registerContentObserver(CONTENT_URI, true, myObserver)
+        loadFavoritesAsync()
 
         adapter.setOnItemClickCallback(object :
             FavoriteAdapter.OnItemClickCallback {
@@ -78,12 +67,16 @@ class FavoriteActivity : AppCompatActivity() {
                 builder.setMessage(getString(R.string.confirm_remove_all))
                     .setCancelable(false)
                     .setPositiveButton(getString(R.string.text_yes)) { dialog, _ ->
-                        contentResolver.delete(CONTENT_URI, null, null)
-                        Toast.makeText(
-                            this@FavoriteActivity,
-                            getString(R.string.success_remove_all),
-                            Toast.LENGTH_LONG
-                        ).show()
+                        model.deleteAllFavorite(this@FavoriteActivity).observe(this, { data ->
+                            if (data > 0) {
+                                Toast.makeText(
+                                    this@FavoriteActivity,
+                                    getString(R.string.success_remove_all),
+                                    Toast.LENGTH_LONG
+                                ).show()
+                                showLoading(false)
+                            }
+                        })
                         finish()
                     }
                     .setNegativeButton(getString(R.string.text_no)) { dialog, _ ->
@@ -121,23 +114,19 @@ class FavoriteActivity : AppCompatActivity() {
     }
 
     private fun loadFavoritesAsync() {
-        GlobalScope.launch(Dispatchers.Main) {
-            showLoading(true)
-            val deferredFavorites = async(Dispatchers.IO) {
-                val cursor = contentResolver.query(CONTENT_URI, null, null, null, null)
-                MappingHelper.mapCursorToArrayList(cursor)
-            }
-            showLoading(false)
-            val listFavorites = deferredFavorites.await()
-            if (listFavorites.size > 0) {
-                adapter.setData(listFavorites)
+        showLoading(true)
+        model.setListFavorite(this)
+        model.getListFavorites().observe(this, { data ->
+            if (data.size > 0) {
+                adapter.setData(data)
+                binding.tvResult.text =
+                    StringBuilder("${getString(R.string.found)} ${data.size} ${getString(R.string.users)}").toString()
             } else {
                 adapter.removeAllItems()
                 showSnackbarMessage(getString(R.string.no_favorite))
             }
-            binding.tvResult.text =
-                StringBuilder("${getString(R.string.found)} ${listFavorites.size} ${getString(R.string.users)}").toString()
-        }
+            showLoading(false)
+        })
     }
 
     private fun showSnackbarMessage(message: String) {

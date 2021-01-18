@@ -13,6 +13,7 @@ import com.dicoding.githubuser.R
 import com.dicoding.githubuser.db.FavoriteDBContract
 import com.dicoding.githubuser.helper.MappingHelper
 import com.dicoding.githubuser.model.User
+import com.dicoding.githubuser.widget.FavoriteWidget.Companion.EXTRA_ITEM
 
 internal class FavoriteWidgetRemoteViewFactory(private val mContext: Context) :
     RemoteViewsService.RemoteViewsFactory {
@@ -62,7 +63,7 @@ internal class FavoriteWidgetRemoteViewFactory(private val mContext: Context) :
             e.printStackTrace()
         }
         val extras = bundleOf(
-            FavoriteWidget.EXTRA_ITEM to mWidgetItems[position].login
+            EXTRA_ITEM to mWidgetItems[position].login
         )
         val fillInIntent = Intent()
         fillInIntent.putExtras(extras)

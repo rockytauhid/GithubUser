@@ -11,6 +11,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import com.dicoding.githubuser.R
 import com.dicoding.githubuser.activity.FavoriteActivity
+import com.dicoding.githubuser.activity.MainActivity
 import com.dicoding.githubuser.helper.Companion
 import java.util.*
 
@@ -63,15 +64,12 @@ class AlarmReceiver : BroadcastReceiver() {
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
 
-        /*val intent = Intent(context, FavoriteActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        }*/
         val intent = Intent(context, FavoriteActivity::class.java)
         intent.putExtra(Companion.ALARM_EXTRA_MESSAGE, message)
         val pendingIntent = TaskStackBuilder.create(context)
-            .addParentStack(FavoriteActivity::class.java)
+            .addParentStack(MainActivity::class.java)
             .addNextIntent(intent)
-            .getPendingIntent(idRepeating, PendingIntent.FLAG_UPDATE_CURRENT)
+            .getPendingIntent(idRepeating, 0)
 
         val builder = NotificationCompat.Builder(context, channelId)
             .setSmallIcon(R.drawable.ic_access_time_black)

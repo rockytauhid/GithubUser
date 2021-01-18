@@ -18,22 +18,18 @@ import com.dicoding.githubuser.adapter.SectionsPagerAdapter
 import com.dicoding.githubuser.databinding.ActivityDetailBinding
 import com.dicoding.githubuser.db.FavoriteDBContract.FavoriteColumns.Companion.CONTENT_URI
 import com.dicoding.githubuser.helper.Companion
-import com.dicoding.githubuser.helper.MappingHelper
 import com.dicoding.githubuser.model.User
 import com.dicoding.githubuser.viewmodel.DetailViewModel
+import com.dicoding.githubuser.viewmodel.FavoriteViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
-
 
 class DetailActivity : AppCompatActivity() {
     private lateinit var adapter: SectionsPagerAdapter
     private lateinit var binding: ActivityDetailBinding
     private lateinit var model: DetailViewModel
     private lateinit var favoriteAdapter: FavoriteAdapter
+    private lateinit var favoriteModel: FavoriteViewModel
     private lateinit var uriWithId: Uri
     private var favoriteStatus: Boolean = false
     private var htmlUrl: String? = null
@@ -54,23 +50,30 @@ class DetailActivity : AppCompatActivity() {
         binding.toolbarLayout.title = user.login
 
         uriWithId = Uri.parse(CONTENT_URI.toString() + "/" + user.id)
-        GlobalScope.launch(Dispatchers.Main) {
-            showLoading(true)
-            val result = async(Dispatchers.IO) {
-                val cursor = contentResolver.query(uriWithId, null, null, null, null)
-                MappingHelper.mapCursorToArrayList(cursor)
-            }
-            showLoading(false)
-            favoriteStatus = result.await().size > 0
-            setFavoriteStatus(favoriteStatus)
-        }
+
+        favoriteModel = ViewModelProvider(
+            this,
+            ViewModelProvider.NewInstanceFactory()
+        ).get(FavoriteViewModel::class.java)
 
         showLoading(true)
+        favoriteModel.getFavoriteStatus(this, uriWithId).observe(this, { data ->
+            if (data != null) {
+                favoriteStatus = data
+                setFavoriteStatus(favoriteStatus)
+                showLoading(false)
+            }
+        })
+
         model = ViewModelProvider(
             this,
             ViewModelProvider.NewInstanceFactory()
         ).get(DetailViewModel::class.java)
-        model.setUserDetail(user.url.toString())
+
+        showLoading(true)
+        if (model.getUserDetail().value == null) {
+            model.setUserDetail(user.url.toString())
+        }
         model.getUserDetail().observe(this, { data ->
             if (data != null) {
                 binding.contentScrolling.tvItemName.text = data.name
@@ -93,15 +96,23 @@ class DetailActivity : AppCompatActivity() {
         favoriteAdapter = FavoriteAdapter()
 
         binding.fab.setOnClickListener {
-            showLoading(false)
+            showLoading(true)
             if (favoriteStatus) {
-                model.deleteFavorite(this, uriWithId, null, null)
-                setFavoriteStatus(!favoriteStatus)
-                showSnackbarMessage(getString(R.string.success_remove))
+                favoriteModel.deleteFavorite(this, uriWithId, null, null).observe(this, { data ->
+                    if (data > 0) {
+                        setFavoriteStatus(!favoriteStatus)
+                        showSnackbarMessage(getString(R.string.success_remove))
+                    }
+                    showLoading(false)
+                })
             } else {
-                model.insertFavorite(this, user)
-                setFavoriteStatus(!favoriteStatus)
-                showSnackbarMessage(getString(R.string.success_favorite))
+                favoriteModel.insertFavorite(this, user).observe(this, { data ->
+                    if (data != null) {
+                        setFavoriteStatus(!favoriteStatus)
+                        showSnackbarMessage(getString(R.string.success_favorite))
+                    }
+                    showLoading(false)
+                })
             }
         }
     }
@@ -150,6 +161,7 @@ class DetailActivity : AppCompatActivity() {
                 ContextCompat.getColor(this, android.R.color.holo_orange_light)
             binding.fab.size = FloatingActionButton.SIZE_MINI
         }
+        binding.fab.visibility = View.VISIBLE
     }
 
     private fun showSnackbarMessage(message: String) {

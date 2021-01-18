@@ -4,8 +4,8 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.dicoding.githubuser.helper.MappingHelper
 import com.dicoding.githubuser.helper.Companion
+import com.dicoding.githubuser.helper.MappingHelper
 import com.dicoding.githubuser.model.User
 import com.loopj.android.http.AsyncHttpResponseHandler
 import cz.msebera.android.httpclient.Header
@@ -27,18 +27,20 @@ class MainViewModel : ViewModel() {
                 headers: Array<Header>,
                 responseBody: ByteArray
             ) {
-                try {
-                    val result = String(responseBody)
-                    val jsonArray = if (query.isNotEmpty()) {
-                        val responseObject = JSONObject(result)
-                        totalCount.postValue(responseObject.getInt("total_count"))
-                        responseObject.getJSONArray("items")
-                    } else {
-                        JSONArray(result)
+                if (statusCode == 200) {
+                    try {
+                        val result = String(responseBody)
+                        val jsonArray = if (query.isNotEmpty()) {
+                            val responseObject = JSONObject(result)
+                            totalCount.postValue(responseObject.getInt("total_count"))
+                            responseObject.getJSONArray("items")
+                        } else {
+                            JSONArray(result)
+                        }
+                        listUsers.postValue(MappingHelper.mapJsonArrayToArrayList(jsonArray))
+                    } catch (e: Exception) {
+                        Log.d("Exception", e.message.toString())
                     }
-                    listUsers.postValue(MappingHelper.mapJsonArrayToArrayList(jsonArray))
-                } catch (e: Exception) {
-                    Log.d("Exception", e.message.toString())
                 }
             }
 

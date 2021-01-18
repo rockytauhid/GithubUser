@@ -39,12 +39,12 @@ class MainActivity : AppCompatActivity() {
         binding.rvUsers.layoutManager = LinearLayoutManager(this)
         binding.rvUsers.adapter = adapter
 
-        showLoading(true)
         model = ViewModelProvider(
             this,
             ViewModelProvider.NewInstanceFactory()
         ).get(MainViewModel::class.java)
 
+        showLoading(true)
         if (model.getListUsers().value == null) {
             model.setListUsers()
             binding.tvResult.text =
@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity() {
             binding.tvResult.text = result
         }
         model.getListUsers().observe(this, { data ->
-            if (data != null) {
+            if (data.size > 0) {
                 adapter.setData(data)
                 showLoading(false)
             }

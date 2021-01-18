@@ -9,6 +9,7 @@ import android.widget.RemoteViews
 import android.widget.Toast
 import androidx.core.net.toUri
 import com.dicoding.githubuser.R
+import com.dicoding.githubuser.activity.MainActivity
 
 class FavoriteWidget : AppWidgetProvider() {
     companion object {
@@ -27,6 +28,11 @@ class FavoriteWidget : AppWidgetProvider() {
             val views = RemoteViews(context.packageName, R.layout.favorite_widget)
             views.setRemoteAdapter(R.id.stack_view, intent)
             views.setEmptyView(R.id.stack_view, R.id.empty_view)
+
+            // click event handler for the title, launches the app when the user clicks on title
+            val titleIntent = Intent(context, MainActivity::class.java)
+            val titlePendingIntent = PendingIntent.getActivity(context, 0, titleIntent, 0)
+            views.setOnClickPendingIntent(R.id.banner_text, titlePendingIntent)
 
             val toastIntent = Intent(context, FavoriteWidget::class.java)
             toastIntent.action = TOAST_ACTION

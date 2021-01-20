@@ -3,6 +3,7 @@ package com.dicoding.githubuser.db
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.provider.BaseColumns
 
 internal class FavoriteDBHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
@@ -18,7 +19,8 @@ internal class FavoriteDBHelper(context: Context): SQLiteOpenHelper(context, DAT
         private const val DATABASE_NAME = "favorite.db"
         private const val DATABASE_VERSION = 1
         private const val SQL_CREATE_ENTRIES = "CREATE TABLE ${FavoriteDBContract.FavoriteColumns.TABLE_NAME}" +
-                " (${FavoriteDBContract.FavoriteColumns.LOGIN} TEXT NOT NULL," +
+                " (${BaseColumns._ID} INTEGER PRIMARY KEY," +
+                " ${FavoriteDBContract.FavoriteColumns.LOGIN} TEXT NOT NULL," +
                 " ${FavoriteDBContract.FavoriteColumns.AVATAR_URL} TEXT NOT NULL," +
                 " ${FavoriteDBContract.FavoriteColumns.URL} TEXT NOT NULL," +
                 " ${FavoriteDBContract.FavoriteColumns.FOLLOWERS_URL} TEXT NOT NULL," +

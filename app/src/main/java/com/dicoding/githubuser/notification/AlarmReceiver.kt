@@ -57,8 +57,8 @@ class AlarmReceiver : BroadcastReceiver() {
         title: String,
         message: String
     ) {
-        val channelId = "Channel_1"
-        val channelName = "AlarmManager channel"
+        val channelId = "com.dicoding.githubuser.channel_1"
+        val channelName = "com.dicoding.githubuser.alarm_channel"
 
         val notificationManagerCompat =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager

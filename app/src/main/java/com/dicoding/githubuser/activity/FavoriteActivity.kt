@@ -14,6 +14,7 @@ import com.dicoding.githubuser.R
 import com.dicoding.githubuser.adapter.FavoriteAdapter
 import com.dicoding.githubuser.databinding.ActivityFavoriteBinding
 import com.dicoding.githubuser.helper.Companion
+import com.dicoding.githubuser.helper.ParcelableUtil
 import com.dicoding.githubuser.model.User
 import com.dicoding.githubuser.viewmodel.FavoriteViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -48,7 +49,8 @@ class FavoriteActivity : AppCompatActivity() {
             FavoriteAdapter.OnItemClickCallback {
             override fun onItemClicked(user: User, position: Int) {
                 val moveWithObjectIntent = Intent(this@FavoriteActivity, DetailActivity::class.java)
-                moveWithObjectIntent.putExtra(Companion.EXTRA_USER, user)
+                val byteArray = ParcelableUtil.marshall(user)
+                moveWithObjectIntent.putExtra(Companion.EXTRA_USER, byteArray)
                 startActivity(moveWithObjectIntent)
             }
         })
@@ -66,7 +68,7 @@ class FavoriteActivity : AppCompatActivity() {
                 val builder = AlertDialog.Builder(this)
                 builder.setMessage(getString(R.string.confirm_remove_all))
                     .setCancelable(false)
-                    .setPositiveButton(getString(R.string.text_yes)) { dialog, _ ->
+                    .setPositiveButton(getString(R.string.text_yes)) { _, _ ->
                         model.deleteAllFavorite(this@FavoriteActivity).observe(this, { data ->
                             if (data > 0) {
                                 Toast.makeText(
@@ -89,12 +91,6 @@ class FavoriteActivity : AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putString(Companion.STATE_RESULT, binding.tvResult.text.toString())
-        outState.putParcelableArrayList(Companion.EXTRA_FAVORITES, adapter.getData())
     }
 
     override fun onSupportNavigateUp(): Boolean {

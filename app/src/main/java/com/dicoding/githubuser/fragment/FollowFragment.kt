@@ -13,6 +13,7 @@ import com.dicoding.githubuser.activity.DetailActivity
 import com.dicoding.githubuser.adapter.UsersAdapter
 import com.dicoding.githubuser.databinding.FragmentFollowBinding
 import com.dicoding.githubuser.helper.Companion
+import com.dicoding.githubuser.helper.ParcelableUtil
 import com.dicoding.githubuser.model.User
 import com.dicoding.githubuser.viewmodel.DetailViewModel
 
@@ -25,9 +26,11 @@ class FollowFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val user = activity?.intent?.getParcelableExtra<User>(Companion.EXTRA_USER)
-        followersUrl = user?.followersUrl
-        followingUrl = user?.followingUrl?.removeSuffix("{/other_user}")
+        val byteArray = activity?.intent?.getByteArrayExtra(Companion.EXTRA_USER) as ByteArray
+        val parcel = ParcelableUtil.unmarshall(byteArray)
+        val user = User(parcel)
+        followersUrl = user.followersUrl
+        followingUrl = user.followingUrl?.removeSuffix("{/other_user}")
     }
 
     override fun onCreateView(
@@ -88,7 +91,8 @@ class FollowFragment : Fragment() {
             UsersAdapter.OnItemClickCallback {
             override fun onItemClicked(user: User) {
                 val moveWithObjectIntent = Intent(activity, DetailActivity::class.java)
-                moveWithObjectIntent.putExtra(Companion.EXTRA_USER, user)
+                val byteArray = ParcelableUtil.marshall(user)
+                moveWithObjectIntent.putExtra(Companion.EXTRA_USER, byteArray)
                 startActivity(moveWithObjectIntent)
             }
         })

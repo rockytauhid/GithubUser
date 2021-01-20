@@ -13,11 +13,11 @@ import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.dicoding.githubuser.R
-import com.dicoding.githubuser.adapter.FavoriteAdapter
 import com.dicoding.githubuser.adapter.SectionsPagerAdapter
 import com.dicoding.githubuser.databinding.ActivityDetailBinding
 import com.dicoding.githubuser.db.FavoriteDBContract.FavoriteColumns.Companion.CONTENT_URI
 import com.dicoding.githubuser.helper.Companion
+import com.dicoding.githubuser.helper.ParcelableUtil
 import com.dicoding.githubuser.model.User
 import com.dicoding.githubuser.viewmodel.DetailViewModel
 import com.dicoding.githubuser.viewmodel.FavoriteViewModel
@@ -28,7 +28,6 @@ class DetailActivity : AppCompatActivity() {
     private lateinit var adapter: SectionsPagerAdapter
     private lateinit var binding: ActivityDetailBinding
     private lateinit var model: DetailViewModel
-    private lateinit var favoriteAdapter: FavoriteAdapter
     private lateinit var favoriteModel: FavoriteViewModel
     private lateinit var uriWithId: Uri
     private var favoriteStatus: Boolean = false
@@ -42,7 +41,9 @@ class DetailActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        val user = intent.getParcelableExtra<User>(Companion.EXTRA_USER) as User
+        val byteArray = intent.getByteArrayExtra(Companion.EXTRA_USER) as ByteArray
+        val parcel = ParcelableUtil.unmarshall(byteArray)
+        val user = User(parcel)
 
         Glide.with(this).load(user.avatarUrl)
             .apply(RequestOptions()).into(binding.imgItemAvatar)
@@ -92,8 +93,6 @@ class DetailActivity : AppCompatActivity() {
         binding.contentScrolling.viewPager.adapter = adapter
         binding.contentScrolling.tabs.setupWithViewPager(binding.contentScrolling.viewPager)
         supportActionBar?.elevation = 0f
-
-        favoriteAdapter = FavoriteAdapter()
 
         binding.fab.setOnClickListener {
             showLoading(true)
@@ -161,7 +160,7 @@ class DetailActivity : AppCompatActivity() {
                 ContextCompat.getColor(this, android.R.color.holo_orange_light)
             binding.fab.size = FloatingActionButton.SIZE_MINI
         }
-        binding.fab.visibility = View.VISIBLE
+        binding.fab.isEnabled = true
     }
 
     private fun showSnackbarMessage(message: String) {

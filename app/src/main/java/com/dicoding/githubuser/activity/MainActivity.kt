@@ -16,9 +16,9 @@ import com.dicoding.githubuser.R
 import com.dicoding.githubuser.adapter.UsersAdapter
 import com.dicoding.githubuser.databinding.ActivityMainBinding
 import com.dicoding.githubuser.helper.Companion
+import com.dicoding.githubuser.helper.ParcelableUtil
 import com.dicoding.githubuser.model.User
 import com.dicoding.githubuser.viewmodel.MainViewModel
-
 
 class MainActivity : AppCompatActivity() {
     private lateinit var adapter: UsersAdapter
@@ -66,7 +66,8 @@ class MainActivity : AppCompatActivity() {
             UsersAdapter.OnItemClickCallback {
             override fun onItemClicked(user: User) {
                 val moveWithObjectIntent = Intent(this@MainActivity, DetailActivity::class.java)
-                moveWithObjectIntent.putExtra(Companion.EXTRA_USER, user)
+                val byteArray = ParcelableUtil.marshall(user)
+                moveWithObjectIntent.putExtra(Companion.EXTRA_USER, byteArray)
                 startActivity(moveWithObjectIntent)
             }
         })

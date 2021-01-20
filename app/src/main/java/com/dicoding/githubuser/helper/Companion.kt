@@ -8,12 +8,11 @@ import com.loopj.android.http.AsyncHttpClient
 class Companion {
     companion object {
         const val SPLASH_TIME_OUT: Long = 3000 // 3 sec
-        const val EXTRA_USER = "extra_user"
-        const val ARG_SECTION_NUMBER = "section_number"
-        const val STATE_QUERY = "state_query"
-        const val STATE_RESULT = "state_result"
-        const val EXTRA_FAVORITES = "extra_favorites"
-        const val ALARM_EXTRA_MESSAGE = "alarm_message"
+        const val EXTRA_USER = "com.dicoding.githubuser.extra_user"
+        const val ARG_SECTION_NUMBER = "com.dicoding.githubuser.section_number"
+        const val STATE_QUERY = "com.dicoding.githubuser.state_query"
+        const val STATE_RESULT = "com.dicoding.githubuser.state_result"
+        const val ALARM_EXTRA_MESSAGE = "com.dicoding.githubuser.alarm_message"
 
         @JvmStatic
         fun newInstance(fragment: Fragment, index: Int) =
@@ -23,7 +22,7 @@ class Companion {
                 }
             }
 
-        fun getAsyncHttpClient(): AsyncHttpClient{
+        fun getAsyncHttpClient(): AsyncHttpClient {
             val client = AsyncHttpClient()
             val token = BuildConfig.API_KEY
             if (token.isNotEmpty())

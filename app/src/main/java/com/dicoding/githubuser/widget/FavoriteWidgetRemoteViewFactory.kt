@@ -11,9 +11,10 @@ import androidx.core.os.bundleOf
 import com.bumptech.glide.Glide
 import com.dicoding.githubuser.R
 import com.dicoding.githubuser.db.FavoriteDBContract
+import com.dicoding.githubuser.helper.Companion.Companion.EXTRA_USER
 import com.dicoding.githubuser.helper.MappingHelper
+import com.dicoding.githubuser.helper.ParcelableUtil
 import com.dicoding.githubuser.model.User
-import com.dicoding.githubuser.widget.FavoriteWidget.Companion.EXTRA_ITEM
 
 internal class FavoriteWidgetRemoteViewFactory(private val mContext: Context) :
     RemoteViewsService.RemoteViewsFactory {
@@ -62,8 +63,9 @@ internal class FavoriteWidgetRemoteViewFactory(private val mContext: Context) :
         } catch (e: Exception) {
             e.printStackTrace()
         }
+        val byteArray = ParcelableUtil.marshall(mWidgetItems[position])
         val extras = bundleOf(
-            EXTRA_ITEM to mWidgetItems[position].login
+            EXTRA_USER to byteArray
         )
         val fillInIntent = Intent()
         fillInIntent.putExtras(extras)

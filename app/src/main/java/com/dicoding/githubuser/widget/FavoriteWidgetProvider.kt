@@ -6,16 +6,13 @@ import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
 import android.widget.RemoteViews
-import android.widget.Toast
 import androidx.core.net.toUri
 import com.dicoding.githubuser.R
-import com.dicoding.githubuser.activity.MainActivity
+import com.dicoding.githubuser.activity.DetailActivity
+import com.dicoding.githubuser.activity.FavoriteActivity
 
-class FavoriteWidget : AppWidgetProvider() {
+class FavoriteWidgetProvider : AppWidgetProvider() {
     companion object {
-        private const val TOAST_ACTION = "com.dicoding.githubuser.TOAST_ACTION"
-        const val EXTRA_ITEM = "com.dicoding.githubuser.EXTRA_ITEM"
-
         private fun updateAppWidget(
             context: Context,
             appWidgetManager: AppWidgetManager,
@@ -30,33 +27,16 @@ class FavoriteWidget : AppWidgetProvider() {
             views.setEmptyView(R.id.stack_view, R.id.empty_view)
 
             // click event handler for the title, launches the app when the user clicks on title
-            val titleIntent = Intent(context, MainActivity::class.java)
+            val titleIntent = Intent(context, FavoriteActivity::class.java)
             val titlePendingIntent = PendingIntent.getActivity(context, 0, titleIntent, 0)
             views.setOnClickPendingIntent(R.id.banner_text, titlePendingIntent)
 
-            val toastIntent = Intent(context, FavoriteWidget::class.java)
-            toastIntent.action = TOAST_ACTION
-            toastIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-            intent.data = intent.toUri(Intent.URI_INTENT_SCHEME).toUri()
+            // click event handler for the images, launches the app when the user clicks on image
+            val detailIntent = Intent(context, DetailActivity::class.java)
+            val detailPendingIntent = PendingIntent.getActivity(context, 0, detailIntent, 0)
+            views.setPendingIntentTemplate(R.id.stack_view, detailPendingIntent)
 
-            val toastPendingIntent = PendingIntent.getBroadcast(
-                context,
-                0,
-                toastIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT
-            )
-            views.setPendingIntentTemplate(R.id.stack_view, toastPendingIntent)
             appWidgetManager.updateAppWidget(appWidgetId, views)
-        }
-    }
-
-    override fun onReceive(context: Context, intent: Intent) {
-        super.onReceive(context, intent)
-        if (intent.action != null) {
-            if (intent.action == TOAST_ACTION) {
-                val login = intent.getStringExtra(EXTRA_ITEM)
-                Toast.makeText(context, "This is $login", Toast.LENGTH_SHORT).show()
-            }
         }
     }
 

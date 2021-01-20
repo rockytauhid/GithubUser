@@ -13,9 +13,9 @@ import com.dicoding.githubuser.R
 import com.dicoding.githubuser.adapter.ReposAdapter
 import com.dicoding.githubuser.databinding.FragmentReposBinding
 import com.dicoding.githubuser.helper.Companion
+import com.dicoding.githubuser.helper.ParcelableUtil
 import com.dicoding.githubuser.model.User
 import com.dicoding.githubuser.viewmodel.DetailViewModel
-
 
 class ReposFragment : Fragment() {
     private lateinit var adapter: ReposAdapter
@@ -25,8 +25,10 @@ class ReposFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val user = activity?.intent?.getParcelableExtra<User>(Companion.EXTRA_USER)
-        reposUrl = user?.reposUrl
+        val byteArray = activity?.intent?.getByteArrayExtra(Companion.EXTRA_USER) as ByteArray
+        val parcel = ParcelableUtil.unmarshall(byteArray)
+        val user = User(parcel)
+        reposUrl = user.reposUrl
     }
 
     override fun onCreateView(

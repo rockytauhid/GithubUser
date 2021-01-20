@@ -22,7 +22,9 @@ class FavoriteViewModel : ViewModel() {
     fun setListFavorite(context: Context) {
         viewModelScope.launch(Dispatchers.IO) {
             val deferred = async {
-                val cursor = context.contentResolver.query(CONTENT_URI, null, null, null, null)
+                val cursor = context.contentResolver.query(
+                    CONTENT_URI, null, null, null, null
+                )
                 MappingHelper.mapCursorToArrayList(cursor)
             }
             listFavorites.postValue(deferred.await())
@@ -37,7 +39,9 @@ class FavoriteViewModel : ViewModel() {
         val result = MutableLiveData<Boolean>()
         viewModelScope.launch(Dispatchers.IO) {
             val status = async {
-                val cursor = context.contentResolver.query(uriWithId, null, null, null, null)
+                val cursor = context.contentResolver.query(
+                    uriWithId, null, null, null, null
+                )
                 MappingHelper.mapCursorToArrayList(cursor)
             }
             result.postValue(status.await().size > 0)
